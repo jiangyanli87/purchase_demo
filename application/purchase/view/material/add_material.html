@@ -1,0 +1,86 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+    }
+</style>
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属站点</label>
+            <div class="layui-input-inline">
+                <select lay-filter="station_name" name="station_name" id='pid' lay-verify="required" lay-search>
+                    {volist name="station" id="vo"}
+                    <option value="{$vo}">{$vo}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">材料大类</label>
+            <div class="layui-input-inline">
+                <select lay-filter="cid" name="cid" id='cid' lay-verify="required" lay-search>
+                    {volist name="cates" id="vo"}
+                    <option value="{$vo.id}">{$vo.c_name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">材料名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="m_name" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">材料规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="spec" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="units" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button class="layui-btn" lay-submit="" lay-filter="add">提交</button>
+                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(add)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("add_material")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('materList');
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

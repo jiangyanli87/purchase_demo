@@ -1,0 +1,59 @@
+{include file="public/header"}
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用&nbsp;户&nbsp;名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" class="layui-input" value="{:session('username')}" readonly>
+                <input type="hidden" name="user_id" class="layui-input" value="{:session('user_id')}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" id="pass" class="layui-input pass" placeholder="请输入密码" value="" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="pwd" class="layui-input pass" placeholder="请再次输入密码" value="" >
+            </div>
+        </div>
+    </form>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline" style="text-align: center;">
+            <button class="layui-btn layui-btn-sm">保存</button>
+            <button class="layui-btn layui-btn-normal">重置</button>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form','layer'], function(){
+        var form = layui.form,
+            layer = layui.layer;
+        $ = layui.jquery;
+        $('#pass').focus();
+        $('.layui-btn-normal').click(function(){
+                $('.pass').val("");
+        });
+    });
+
+    //监听提交
+    $('.layui-btn-sm').click(function() {
+        $.post('/admin/user/savePwd',$('form').serialize(), function (res) {
+            if (res.code > 0) {
+                layer.msg(res.msg, {icon: 2});
+            } else {
+                layer.msg(res.msg, {icon: 1});
+                setTimeout(function () {
+                    parent.window.location.reload();
+                }, 2000);
+            }
+        },'json')
+    })
+</script>
+{include file="public/footer"}

@@ -1,0 +1,91 @@
+
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+        
+    }
+    .add_login{display: flex;
+        justify-content: space-around;
+    }
+    .login_left{
+        margin-left:-51px;
+    }
+    .login_right{
+        margin-left:-34px;
+    }
+    .layui-form-label{
+       
+        padding:11px 15px !important;
+        font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #666666;
+line-height: 10px;
+    }
+    .layui-input-inline input{
+        height: 27px;
+        /* background-color: aliceblue; */
+    }
+    .layui-input-inline .layui-input{
+        background-color: #fff;
+        /* border: #666666; */
+        height: 30px;
+        width: 160px;
+    }
+    .layui-form-item{
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+<div class="x-body" >
+    <form class="layui-form">
+
+        <div class="layui-form-item" style="margin: 28px -12px 28px -40px">
+            <label class="layui-form-label" >大类名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="id" value="{$edit_item.id}" style="display: none;">
+                <input type="text" name="c_name" value="{$edit_item.c_name}" lay-verify="required" autocomplete="off" class="layui-input" style="width: 160px;">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="float: right;margin-right: -34px;">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button class="layui-btn layui-btn-normal close" value="关闭" type="reset" style="background-color: #fff;color: #333;border: #666666 solid 1px;">重置</button>
+                <button class="layui-btn" lay-submit="" lay-filter="edit" >确定</button> 
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(edit)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("editItem")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('purList');//刷新父窗口表格
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

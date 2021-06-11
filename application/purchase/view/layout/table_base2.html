@@ -1,0 +1,144 @@
+{include file="public/header"}
+<link rel="stylesheet" href="__CSS__/tableBase.css">
+<style type="text/css">
+    tr a{
+        height: 25px !important;
+        line-height: 25px !important;
+        padding: 0 8px!important;
+    }
+    .item{
+        margin-right: 15px !important;
+    }
+    .item label{
+        display: inline-block;
+        width: 80px !important;
+        text-align: right;
+    }
+    .d-dr,
+    .d-dr-jsb,
+    .d-dr-jc,
+    .d-dr-jsa,
+    .d-dc,
+    .d-dc-jc,
+    .d-dc-jsb,
+    .d-dc-jsa {
+        display: flex;
+    }
+    .d-dr,
+    .d-dr-jc,
+    .d-dr-jsb,
+    .d-dr-jsa,
+    .d-dr-jcac
+    {
+        flex-direction: row;
+    }
+    .d-dr-ac,
+    .d-dr-jcac,
+    .d-dc-ac,
+    .d-dc-jcac {
+        display: flex;
+        align-items: center;
+    }
+
+    .d-dr-jcac,
+    .d-dr-jc,
+    .d-dc-jc,
+    .d-dc-jcac {
+        justify-content: center;
+    }
+
+    .d-dc-jcac,
+    .d-dc-jc,
+    .d-dc-ac,
+    .d-dc,
+    .d-dc-jsb,
+    .d-dc-jsa{
+        flex-direction: column;
+    }
+
+    .d-dr-jsa ,
+    .d-dc-jsa{
+        justify-content: space-around;
+    }
+
+    .d-dr-jsb,
+    .d-dc-jsb{
+        justify-content: space-between;
+    }
+
+    .aic{
+        align-items: center;
+    }
+
+    .d-f1 {
+        flex: 1;
+    }
+
+</style>
+<body>
+<div class="x-body">
+    {block name="field_title"}
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>权限列表</legend>
+    </fieldset>
+    {/block}
+    <!-- {block name="header"}
+    <form class="layui-form" action="#">
+        <div class="item">
+            <div class="layui-input-inline">
+                <select name="search_key" lay-verify="required" id="search_key">
+                    <option value="">选择搜索类型</option>
+                    {volist name="search_info" id="vo"}
+                    <option value="{$key}">{$vo}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="item">
+            <div class="layui-input-inline">
+                <input type="text" name="search_val" id="search_val" placeholder="搜索内容" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <button type="button" style="width: 50px;" id="search" class="layui-btn layui-btn-sm layui-btn-normal" data-type="reload">
+            <i class="layui-icon">&#xe615;</i>
+        </button>
+        <button type="button" style="width: 50px;" id="add" class="layui-btn layui-btn-sm">
+            <i class="layui-icon">&#xe654;</i>
+        </button>
+        <div style="position: absolute;right: 50px;"> -->
+            <!--<button type="submit" style="width: 50px;" class="layui-btn layui-btn-sm layui-btn-normal">-->
+            <!--<i class="layui-icon">&#xe601;</i>-->
+            <!--</button>-->
+            <!-- <button type="button" style="width: 50px;" onclick="javascript:location.reload();" class="layui-btn layui-btn-sm">
+                <i class="layui-icon">&#xe669;</i>
+            </button>
+        </div>
+    </form>
+    {/block} -->
+    {block name="table_box"}
+    <table id="table_ele" lay-filter="table_ele" style="flex: 1;"></table>
+    {/block}
+    <script type="text/html" id="toolbar">
+    {block name="toolbar"}
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        </div>
+    {/block}
+    </script>
+    <script type="text/html" id="table_bar">
+        {block name="table_bar"}
+            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="iconfont">&#xe8ad;</i>&nbsp;编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="iconfont">&#xe8b6;</i>&nbsp;删除</a>
+        {/block}
+    </script>
+</div>
+{block name="table_data"}
+<script type="text/javascript">
+
+</script>
+{/block}
+</body>
+{include file="public/footer"}

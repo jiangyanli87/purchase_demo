@@ -1,0 +1,151 @@
+<!doctype html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>兴业商砼</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="__CSS__/font.css">
+    <link rel="stylesheet" href="__CSS__/xadmin.css">
+    <link rel="stylesheet" href="__CSS__/theme1.css">
+    <link rel="stylesheet" href="__CSS__/formSelects-v4.css">
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <script src="__JS__/jquery.min.js" charset="utf-8"></script>
+    <script src="__STATIC__/lib/layui/layui.all.js" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        // 是否开启刷新记忆tab功能
+        var is_remember = false;
+    </script>
+    <style type="text/css">
+        body{
+            background: #ffffff;
+        }
+        .layui-form-item{
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+<div class="x-body">
+    <form action="#" class="layui-form" id="mainForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+
+            </label>
+            <div class="layui-input-inline" id="upload-box">
+                <input type="hidden" value="" name="upload_dir" id="upload_dir" lay-verify="upload_dir">
+                <button type="button" class="layui-btn layui-btn-fluid" id="upload"><i class="layui-icon"></i>上传文件</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+
+            </label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="version" lay-verify="version" name="version" placeholder="版本号，例如：v1.1.1" type="text"> </input>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+
+            </label>
+            <div class="layui-input-inline">
+                <textarea name="update_log" id="update_log" cols="30" rows="10" class="layui-textarea" lay-verify="update_log" placeholder="更新内容:" type="text"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <div class="layui-input-inline" style="text-align: center">
+                <button class="layui-btn" lay-submit lay-filter="doadd">添加</button>
+                <button class="layui-btn layui-btn-danger">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate
+                ,$ = layui.jquery
+                ,upload = layui.upload;
+
+            upload.render({ //允许上传的文件后缀
+                elem: '#upload'
+                ,field:'app'
+                ,url: '{:url("upload")}'
+                ,accept: 'file' //普通文件
+                ,exts: 'apk' //只允许上传压缩文件
+                ,choose:function (obj) {
+                    // console.log(obj)
+                }
+                ,before: function(obj){
+                    index = layer.load()
+                    if($('#file-name').text() != ''){
+                        $('#file-name').remove();
+                    }
+                    obj.preview(function(index, file, result){
+                        $('#upload-box').append('<span style="color: #888888;padding-top: 10px;display: block" id="file-name">文件名：'+ file.name +'</span>')
+                    });
+                }
+                ,done: function(res){
+                    $('#upload_dir').val(res.data.url);
+                    layer.close(index)
+                    if($('#version').val() == ''|| $('#update_log').val() == ''){
+                        layer.msg('上传成功,请添加相关消息！')
+                    }
+                }
+            });
+
+            //自定义验证规则
+            form.verify({
+                version: [
+                    /^[v][1-9]{1,}[.](\d{1,}|\d{1,}[.]\d{1,})$/
+                    ,'版本号格式错误！'
+                ],
+                update_log:function(value){
+                    if(value == ''){
+                        return '请填写更新内容！';
+                    }
+                },
+                upload_dir:function(value) {
+                    if(value == ''){
+                        return '你还没有上传文件！';
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(doadd)', function(data){
+                $.ajax({
+                    type:'post',
+                    url:'{:url("add")}',
+                    data:data.field,
+                    dataType:'json',
+                    success:function(data){
+                        if(data.code == 0){
+                            layer.msg(data.msg, {icon:1},function(){
+                                parent.location.reload();
+                            });
+                            return false;
+                        }
+                        layer.msg(data.msg, {icon:2})
+                    }
+                })
+                return false;
+            });
+
+
+        })
+</script>
+{include file="public/footer"}

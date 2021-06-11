@@ -1,0 +1,444 @@
+{extend name="layout/table_base"}
+{block name="field_title"}
+<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>采购确认</legend>
+</fieldset> -->
+<div class="layui-breadcrumb bread" style=" margin-top: 15px;margin-bottom: 13px;" >
+    <span style="font-size: 18px;">当前位置: &nbsp;</span>
+    <a href="{:url('admin/index/home')}">首页</a> 
+    <a href="#">报价管理</a>
+    <!-- <a href="">亚太地区</a> -->
+    <a><cite>报价确认</cite></a>
+  </div>  
+{/block}
+{block name="toolbar"}
+<div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
+</div>
+{/block}
+{block name="header"}
+<form class="layui-form aic" action="#">
+    <div class="item" style="margin-left: -43px;">
+        <label>流水号 </label>
+        <div class="layui-input-inline">
+            <input type="text" name="pur_num" id="pur_num" placeholder="为空时显示全部" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="item">
+        <label>显示类型</label>
+        <div class="layui-input-inline">
+            <select name="audit_status" lay-verify="required" id="audit_status">
+                <option value="0">未确认</option>
+                <option value="1">已确认</option>
+                <option value="2">已取消</option>
+            </select>
+        </div>
+    </div>
+    <button type="button" style="width: 50px;" id="search" class="layui-btn layui-btn-sm " data-type="reload">
+        <i class="layui-icon">&#xe615;</i>
+    </button>
+    <!--<button type="button" style="width: 50px;" id="add" class="layui-btn layui-btn-sm ">-->
+    <!--<i class="layui-icon">&#xe654;</i>-->
+    <!--</button>-->
+    <!-- <div style="position: absolute;right: 50px;">
+        <a href="javascript:location.reload();" style="width: 50px;" class="layui-btn layui-btn-sm ">
+            <i class="layui-icon">&#xe669;</i>
+        </a>
+    </div> -->
+    <div id="page" style="position: absolute;right: 50px;"></div>
+</form>
+{/block}
+{block name="table_box"}
+<style type="text/css">
+    .pur-item {
+        /*width: 1600px;*/
+        /*height: 240px;*/
+        /*border: 1px solid #dddddd;*/
+        /*opacity: 0.55;*/
+        /* box-shadow: 0 0 8px #dddddd; */
+        margin-top: 20px;
+        border-radius: 4px;
+        background: #F8F8F8;;
+        padding-bottom: 20px;
+    }
+    .pur-item:hover {
+        box-shadow: 0 0 18px #dddddd;
+    }
+    .p-num {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333333;
+        display: flex;
+        flex-direction: row;
+        /* text-align: center; */
+        justify-content: flex-start;
+        margin: auto 0;
+    }
+    .img {
+        margin-right: 10px;
+    }
+    .item-title {
+        padding: 20px 20px 0 20px;
+    }
+    .item-title1 {
+        padding: 0 20px;
+    }
+    .item-title1 .title {
+        color: #999999;
+    }
+    .item-body {
+        background: #ffffff;
+        margin: 0 20px 20px 20px;
+    }
+    .item-body:last-of-type, .empty:last-of-type {
+        margin-bottom: 0;
+    }
+    .empty {
+        padding: 20px;
+        color: #333333;
+        text-align: center;
+        font-size: 14px;
+        background: #ffffff;
+        margin: 0 20px 20px 20px;
+    }
+    .b-item {
+        font-size: 14px;
+        font-weight: 400;
+        color: #999999;
+        padding: 0 20px;
+        margin: 20px 0 10px 0;
+        flex: 1;
+    }
+    .line {
+        /*width: 1px;*/
+        height: 60px;
+        border: 1px solid #E6E6E6;
+    }
+    /*.b-item:nth-type-of (){*/
+    /**/
+    /*}*/
+    /*.b-item:nth-of-type(1){*/
+    /*border-right: 1px solid #dddddd;*/
+
+    /*}*/
+
+    /*.b-item:nth-of-type(2){*/
+    /*border-right: 1px solid #dddddd;*/
+    /*}*/
+    .item {
+        margin: 15px 0;
+        /*margin-top: 15px;*/
+    }
+    .item .icon{
+        margin-right: 10px;
+    }
+    .title {
+        width: 120px;
+    }
+    .content {
+        color: #333333;
+    }
+    .t-button {
+        width: 100px;
+        height: 30px;
+        /*background: #086DF3;*/
+        border-radius: 2px;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+    .c-button {
+        width: 116px;
+        height: 30px;
+        border: 1px solid #2F91FC;
+        border-radius: 2px;
+        background: #ffffff;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #2F91FC;
+        line-height: 10px;
+    }
+    .c-b-box {
+        /*height: 111.5px;*/
+    }
+    #page {
+        text-align: right;
+        margin-top: 20px;
+    }
+    .layui-laypage-count {
+     
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #333333;
+        line-height: 10px;
+    }
+</style>
+
+<div class="pur-box" id="pur_box">
+</div>
+
+{/block}
+{block name="table_bar"}
+{/block}
+{block name="table_data"}
+<script type="text/html" id="pur_item">
+    {{#  layui.each(d.data, function(index, item){ }}
+    <div class="pur-item" >
+        <div class="item-title d-dr-jsb">
+            <div class="p-num">
+                <img src="/public/static/images/purchase/num.png" alt="" class="img">
+                采购单号：{{ item.pur_num }}【{{item.proposer}}】
+            </div>
+            <div class="btn-box">
+                <button class="layui-btn t-button">重新发送</button>
+                <button onclick="offer_msg_record()" class="layui-btn t-button">消息记录</button>
+                <button class="layui-btn t-button">结束确认</button>
+                <!-- <button class="layui-btn t-button">供应商电话</button> -->
+            </div>
+        </div>
+        <div class="item-title1 d-dr-jsb">
+            <div class=" item d-dr aic">
+                <img src="/public/static/images/purchase/proposer.png" alt="" class="icon">
+                <div>
+                    <span class="title">申请人：</span>
+                    <span class="content">{{ item.proposer }}</span>
+                </div>
+            </div>
+            <div class=" item d-dr aic">
+                <img src="/public/static/images/purchase/gs.png" alt="" class="icon">
+                <div>
+                    <span class="title">采购部门：</span>
+                    <span class="content">
+                    {{ item.proposer }}
+                </span>
+                </div>
+            </div>
+            <div class=" item d-dr aic">
+                <img src="/public/static/images/purchase/time.png" alt="" class="icon">
+                <div>
+                    <span class="title">要求到厂时间：</span>
+                    <span class="content">
+                    {{ item.require_time1 }} 至 {{ item.require_time2 }}
+                </span>
+                </div>
+            </div>
+            <div class=" item d-dr aic">
+                <img src="/public/static/images/purchase/time.png" alt="" class="icon">
+                <div>
+                    <span class="title">报价截至时间：</span>
+                    <span class="content">{{ item.expir_time }}</span>
+                </div>
+            </div>
+        </div>
+        {{# layui.each(item.item, function(iindex, iitem){ }}
+        <div class="item-body layui-row d-dr aic" >
+            <div class="b-item d-dr-jsb aic">
+                <div class="">
+                    <div class="d-dr item">
+                        <div class="title">原材料编号</div>
+                        <div class="content">{{ iitem.m_num }}</div>
+                    </div>
+                    <div class="d-dr item">
+                        <div class="title">物资名称</div>
+                        <div class="content">
+                            {{ iitem.m_name }}
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="line"></div>-->
+            </div>
+            <!--<div class="line"></div>-->
+            <div class="b-item d-dr-jsb aic">
+                <div class="">
+                    <div class="d-dr item">
+                        <div class="title">规格型号</div>
+                        <div class="content">{{ iitem.spec }}</div>
+                    </div>
+                    <div class="d-dr item">
+                        <div class="title">数量（单位）</div>
+                        <div class="content">{{ iitem.num }} {{ iitem.units }}</div>
+                    </div>
+                </div>
+                <!--<div class="line"></div>-->
+            </div>
+            <!--<div class="line"></div>-->
+            <div class="b-item d-dr-jsb aic">
+                <div class="">
+                    <div class="d-dr item">
+                        <div class="title">上次价格</div>
+                        <div class="content">—</div>
+                    </div>
+                    <div class="d-dr item" style="width: 250px;">
+                        <div class="title">截至送货时间</div>
+                        <div class="content">{{ iitem.end_time }}</div>
+                    </div>
+                </div>
+                <!--<div class="line"></div>-->
+            </div>
+            <!--<div class="line"></div>-->
+            <div class="b-item d-dr-jsb aic">
+                <div class="">
+                    <div class="d-dr item">
+                        <div class="title">验收标准</div>
+                        <div class="content">{{ iitem.ys_standard }}</div>
+                    </div>
+                    <div class="d-dr item">
+                        <div class="title">备注</div>
+                        <div class="content">{{ iitem.remark }}</div>
+                    </div>
+                </div>
+                <!--<div class="line"></div>-->
+            </div>
+            <!--<div class="line"></div>-->
+            <div class="b-item c-b-box d-dc" style="align-items: center;">
+                <!-- <button class="c-button d-dr-jcac" onclick="chooseSupplierPrice('{{item.id}}')"> -->
+                <button class="c-button d-dr-jcac" >
+                    <img src="/public/static/images/purchase/choose.png" alt="" class="img">
+                   <a href="{:url('choose_supp')}">选择供应商</a> 
+                </button>
+            </div>
+        </div>
+        {{# }); }}
+        {{# if(item.item.length === 0){ }}
+        <div class="empty">无数据</div>
+        {{# } }}
+        <!--<div class="item-body layui-row" >-->
+        <!--<div class="layui-col-md3 b-item d-dr-jsb aic" >-->
+        <!--<div class="">-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">申请人</div>-->
+        <!--<div class="content">{{ item.proposer }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">采购部门</div>-->
+        <!--<div class="content">-->
+        <!--{{ item.proposer }}-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">要求到厂时间</div>-->
+        <!--<div class="content">-->
+        <!--<p>{{ item.require_time1 }}至</p>-->
+        <!--<p>{{ item.require_time2 }}</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">报价截至时间</div>-->
+        <!--<div class="content">{{ item.expir_time }}</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line"></div>-->
+        <!--</div>-->
+        <!--<div class="layui-col-md3 b-item d-dr-jsb aic">-->
+        <!--<div class="">-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">材料编号</div>-->
+        <!--<div class="content">{{ item.m_num }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">材料名称</div>-->
+        <!--<div class="content">{{ item.m_name }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">规格</div>-->
+        <!--<div class="content">{{ item.spec }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">数量（单位）</div>-->
+        <!--<div class="content">{{ item.num }} {{ item.units }}</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="line"></div>-->
+        <!--</div>-->
+        <!--<div class="layui-col-md3 b-item d-dr-jsb aic">-->
+        <!--<div class="">-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">上次价格</div>-->
+        <!--<div class="content">-</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">截至送货时间</div>-->
+        <!--<div class="content">{{ item.end_time }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">验收标准</div>-->
+        <!--<div class="content">{{ item.ys_standard }}</div>-->
+        <!--</div>-->
+        <!--<div class="d-dr item">-->
+        <!--<div class="title">备注</div>-->
+        <!--<div class="content">{{ item.remark }}</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="line"></div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="layui-col-md3 b-item c-b-box d-dc-jcac">-->
+        <!--<button class="c-button d-dr-jcac" onclick="chooseSupplierPrice('{{item.id}}')">-->
+        <!--<img src="__STATIC__/images/purchase/choose.png" alt="" class="img">-->
+        <!--选择供应商-->
+        <!--</button>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+    {{#  }); }}
+    {{#  if(d.data.length === 0){ }}
+    <div class="empty">无数据</div>
+    {{#  } }}
+</script>
+<script type="text/javascript">
+    layui.use(['table', 'form', 'laydate', 'laypage', 'laytpl'], function () {
+        var laypage = layui.laypage;
+        laytpl = layui.laytpl;
+        //加载数据
+        window.loadPage = function (page = 2, limit = 3) {
+            var getTpl = $('#pur_item').html(),
+                view = $('#pur_box'),
+                type = $('#audit_status').val(),
+                pur_num = $('#pur_num').val();
+            type = type ? type : 0;
+            $.get('{:url("getComfirmData")}', {pur_num, type, page, limit,}, function (res) {
+                laytpl(getTpl).render(res.data, function (html) {
+                    view.html(html);
+                });
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: res.data.count //数据总数，从服务端得到
+                    , prev: '<i class="layui-icon layui-icon-left"></i>'
+                    , next: '<i class="layui-icon layui-icon-right"></i>'
+                    , limit: limit
+                    , curr: page === 1 ? 1 : location.hash.replace('#!page=', '')
+                    , hash: 'page'
+                    // , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                    , layout: ['count', 'prev', 'page', 'next', 'skip']
+                    , jump: function (obj, first) {
+                        // //首次不执行
+                        if (!first) {
+                            loadPage(obj.curr, obj.limit);
+                        }
+                    }
+                });
+            });
+        };
+        //选择供应商报价
+        window.chooseSupplier=function(){
+            xadmin.open("")
+        }
+        // window.chooseSupplierPrice = function (pi_id) {
+        //     xadmin.open('选择报价', '{:url("show_supp_price")}?pi_id=' + pi_id, 1000, 550);
+        // };
+        //消息记录
+        window.offer_msg_record=function(){
+            xadmin.open("消息记录", '{:url("offer_msg_record")}',1078,680)
+        }
+        loadPage();
+        //搜索按钮
+        $('#search').click(function () {
+            loadPage();
+        });
+    });
+</script>
+{/block}

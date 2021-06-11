@@ -1,0 +1,466 @@
+{extend name="layout/table_base"}
+{block name="field_title"}
+<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>采购需求列表</legend>
+</fieldset> -->
+<div class="layui-breadcrumb bread" style=" margin-top: 15px;margin-bottom: 13px;">
+    <span style="font-size: 18px;">当前位置: &nbsp;</span>
+    <a href="{:url('admin/index/home')}">首页</a>
+    <a href="#">报价管理</a>
+    <a href="{:url('comfirm')}">报价确认</a>
+    <a><cite>选择供应商报价</cite></a>
+</div>
+{/block}
+
+
+{block name="toolbar"}
+<div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
+</div>
+{/block}
+{block name="header"}
+<style>
+    .data .title {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+    }
+
+    .data .title span {
+        font-size: 16px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: #333333;
+        line-height: 10px;
+        margin-left: 10px;
+        margin-top: 3px;
+    }
+
+    .data .title_lg {
+        width: 4px;
+        height: 16px;
+        background: #086DF3;
+    }
+
+    .data_cont {
+        display: flex;
+        /* flex-direction: row; */
+        justify-content: space-between;
+        margin-bottom: 40px;
+    }
+
+    .data_cont .content {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .data_cont .content .data_dat {
+        margin-top: 9px;
+        margin-left: 13px;
+    }
+
+    .data_cont .content .data_dat p {
+        font-size: 24px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: #333333;
+        line-height: 10px;
+        margin-bottom: 15px;
+    }
+
+    .data_cont .content .data_dat span {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #999999;
+        line-height: 10px;
+    }
+
+    .data_cont .sep_line {
+        width: 1px;
+        height: 52px;
+        background: #E6E6E6;
+
+    }
+
+    .msg_det .det_title {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #666666;
+        line-height: 10px;
+        margin-right: 41px;
+    }
+
+    .msg_det .det_cont {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #333333;
+        line-height: 10px;
+    }
+
+    .msg_det div {
+        margin-bottom: 15px;
+    }
+
+    .demander {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 25px;
+        /* justify-content: space-between; */
+    }
+    .layui-body{
+min-width:1080px !important;
+}
+/* .layui-table-cell,layui-table-tool-panel li{
+height:auto;
+overflow:visible;
+text-overflow:inherit;
+white-space:normal;
+padding:0px 5px !important;
+/* line-height:24px; 
+} */
+
+   /* .layui-table-box{
+overflow:visible !important;
+
+} */
+
+/* .layui-table-body{
+overflow:visible !important;
+
+} */
+
+.layui-table-cell{
+    overflow:visible !important;
+} 
+    .layui-table-col-special>.layui-table-cell .laytable-cell-1-0-8 {
+        /* overflow: visible !important; */
+    }
+</style>
+<!-- 数据信息 -->
+<div class="data">
+    <div class="title" style="margin-top: 20px;">
+        <div class="title_lg"></div>
+        <span>数据信息</span>
+    </div>
+    <div class="data_cont">
+        <!-- <div class="sep_line"></div> -->
+        <!-- <div class="content">
+            <img src="/public/static/images/icon/supp.png" alt="">
+            <div class="data_dat">
+                <p>3000</p>
+                <span>采购需求数量</span>
+            </div>
+        </div>-->
+        <!-- <div class="sep_line"></div> -->
+    </div>
+    <!-- <div class="sep_line"></div> -->
+</div>
+<!-- 需方信息 -->
+<div class="data ">
+    <div class="title">
+        <div class="title_lg"></div>
+        <span>需方信息</span>
+    </div>
+    <div class="demander">
+        <div class="msg_det">
+            <div>
+                <span class="det_title" style="margin-right: 56px;">流水号</span><span class="det_cont"
+                    style=''>16590</span>
+            </div>
+            <div><span class="det_title">公司名称</span><span class="det_cont">息县金宏商砼</span></div>
+            <div><span class="det_title">物资名称</span><span class="det_cont">石子</span></div>
+            <div> <span class="det_title">物资规格</span><span class="det_cont">10-20mm碎石</span></div>
+        </div>
+        <div class="msg_det" style="margin : 0 130px;">
+            <div> <span class="det_title" style="margin-right: 56px;">物料编码</span><span class="det_cont"
+                    style=''>16590</span> </div>
+            <div> <span class="det_title">数量（单位）</span><span class="det_cont">息县金宏商砼</span></div>
+            <div> <span class="det_title">验收标准</span><span class="det_cont">石子</span></div>
+            <div> <span class="det_title">采购备注</span><span class="det_cont">10-20mm碎石</span></div>
+        </div>
+        <div class="msg_det">
+            <div> <span class="det_title" style="margin-right: 56px;">需求发布时间</span><span class="det_cont"
+                    style=''>16590</span></div>
+            <div><span class="det_title">报价截止时间</span><span class="det_cont">息县金宏商砼</span></div>
+            <div><span class="det_title">截止送货时间</span><span class="det_cont">石子</span></div>
+            <div><span class="det_title">要求到厂时间</span><span class="det_cont">10-20mm碎石</span></div>
+        </div>
+    </div>
+
+</div>
+<!-- 需方信息 -->
+<div class="data ">
+    <div class="title" style="margin-bottom: 10px;">
+        <div class="title_lg"></div>
+        <span>选择供应商报价</span>
+    </div>
+</div>
+<script>
+    (function () {
+        var html = '';
+        $.ajax({
+            url: '/public/static/js/supp_data.json',
+            type: 'GET',
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                for (var i = 0; i < res.data.length; i++) {
+                    html += `<div class="content">
+          <img src="` + res.data[i].img + `"alt="">
+          <div class="data_dat">
+            <p> `+ res.data[i].num + `</p>
+             <span> `+ res.data[i].intor + `</span>
+         </div>      
+</div> 
+<div class="sep_line"></div>`
+                }
+                $('.data_cont').append(html);
+            }
+        })
+    }())
+    $(document).ready(function () {
+        $(".data_cont .sep_line:last").hide()
+    })
+</script>
+{/block}
+
+{block name="table_bar"}
+{{# if(d.audit_status.value === 0){ }}
+<img lay-event="choose_quote" src="/public/static/images/icon/chose.png" style="margin-top: -4px;width: 12px;" alt="">
+<a lay-event="choose_quote" style="margin-left: -8px;">选择报价</a>
+<img lay-event="cel_qualification" src="/public/static/images/icon/cancel.png" style="margin-top: -4px;width: 12px;"
+    alt="">
+<a lay-event="cel_qualification" style="margin-left: -8px;">取消资格</a>
+
+{{# } else { }}
+<img class=" layui-disabled" lay-event="choose_quote" src="/public/static/images/icon/no_chose.png"
+    style="margin-top: -4px;width: 12px;" alt="">
+<a class=" layui-disabled" lay-event="choose_quote" style="margin-left: -8px;">选择报价</a>
+<img class=" layui-disabled" lay-event="cel_qualification" src="/public/static/images/icon/no_cancel.png"
+    style="margin-top: -4px;width: 12px;" alt="">
+<a class=" layui-disabled" lay-event="cel_qualification" style="margin-left: -8px;">取消资格</a>
+
+{{# } }}
+<!-- <img lay-event="del" src="/public/static/images/icon/more.png" style="margin-top: -3px;" alt="">
+    <a  lay-event="del" style="margin-left: -8px;" >更多</a>        
+            -->
+<div id="more" style="float: right;position: relative;top:0px;right: 6px;" lay-event="more"
+    onmouseover="moreShowFunc('{{d.id}}', '{{d.supp_name}}')" onmouseout="moreHideFunc('{{d.id}}', '{{d.supp_name}}')">
+    <div>
+        <img src="/public/static/images/icon/more.png" style="margin-top: -3px;" alt="">
+        <a style="margin-left: -10px;">更多</a>
+    </div>
+    <div class="pic more_ele" id="more_{{d.id}}"
+        style="display: none;position:absolute; background: url(/public/static/images/icon/more_serial.png); width: 113px;height: 89px;right: -17px;z-index: 999999 !important;">
+        <div class="binding" style="cursor: pointer;margin-top: 13px;" lay-event="reject">
+            <img src="/public/static/images/icon/back1.png" style="margin-top: -3px;margin-right: 2px;" alt="">
+            <span style="color: #fff;opacity: .6;">驳回报价</span>
+        </div>
+        <div class="detial" lay-event='history_quote' style="cursor: pointer;margin-top: 3px;">
+            <img src="/public/static/images/icon/history1.png" style="margin-top: -3px;margin-right: 2px;" alt="">
+            <span style="color: #fff;opacity: .6;">历史报价</span>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="table_data"}
+
+<script type="text/javascript">
+ window.moreShowFunc = function (id, name) {
+   $(".more").css("right",'20px')
+            // $(".more").parents(".layui-table-cell").css('width','100px')
+            $('#more_' + id).toggle();
+
+            console.log(123)
+            eles = document.getElementsByClassName('more_ele');
+            // console.log(eles);
+            for (var i in eles) {
+                if (typeof (i) !== Number) continue;
+                if ($(eles[i]).id !== '#more_' + id) eles[i].hide();
+                // console.log($('.more_ele'))
+            }
+        }
+
+        window.moreHideFunc = function (id, name) {
+            $('#more_' + id).toggle();
+            // console.log($('div .more_ele'))
+            // eles = document.getElementsByClassName('more_ele');
+            // console.log(eles);
+            // for(var i in  eles){
+            //     console.log($('.more_ele'))
+            //     if(typeof(i) !== Number) continue;
+            //     if($(eles[i]).id !== '#more_'+ id)  eles[i].hide();
+            //     console.log($('.more_ele'))
+            // }
+        }
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#table_ele'
+            , url: '{:url("getNeedList")}'
+            // , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print'
+                //     , { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                //     title: '提示'
+                //     ,layEvent: 'LAYTABLE_TIPS'
+                //     ,icon: 'layui-icon-tips'
+                // }
+            ]
+            , limit: 10
+            , limits: [10, 15, 20]
+            // , height: 700
+            , loading: true
+            , title: '采购需求列表'
+            , cols: [[
+                {  field: 'id', title: '供应商名称', width: "8%", unresize: true, sort: true },
+                { field: 'pur_num', title: '可供数量', width: "7%", align: 'center' }
+                , { field: 'proposer', title: '单位', width: "6%", align: 'center' },
+                { field: "uid", title: '靠港价格', width: "7%", align: 'center' }
+                , { field: 'material_id', title: '进站价格', width: "7%", align: 'center' }
+                , { field: 'c_name', title: '结算方式', width: "7%", },
+                { field: "uid", title: '账期', width: "6%", align: 'center' },
+                { field: "uid", title: '产地', width: "6%", align: 'center' }
+                , { field: 'expir_time', title: '承诺供货时间', width: "13%", align: 'center' }
+                , { field: 'c_name', title: '报价类型', width: "7%", }
+                , {
+                    field: 'audit_status', title: '选择类型', width: "7%", align: 'center', templet(d) {
+                        // if (d.audit_status.text=="未审核") return '<span style="color:#F37108">未审核</span>';
+                        // if (d.audit_status.text=="已审核") return '<span style="color:#17AE10">已通过</span>';
+                        // if (d.audit_status.text=="未通过") return '<span style="color:#F30808">未通过</span>';
+                        return d.audit_status.s_handle;
+                    }
+                }
+                , { field: "uid", title: '已选数量', width: "7%", align: 'center' }
+                , { field: 'add_info', title: '未选择低价说明', width: "10%", align: 'center' }
+                , { field: 'add_info', title: '备注', align: 'center' }
+                , {  title: '操作', align: 'center', toolbar: '#table_bar', width: 250 }
+            ]]
+            , page: true
+            , id: 'purList'
+            , done: function (res, curr, count) {
+                $("table").css("width", "100%");
+            }
+
+        });
+        //头工具栏事件
+        table.on('toolbar(table_ele)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(table_ele)', function (obj) {
+            var data = obj.data;
+            //console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除采购单：' + data.pur_num, { title: '警告', icon: 3 }, function (index) {
+                    $.ajax({
+                        type: 'get',
+                        url: '{:url("del_need")}',
+                        data: { p_id: data.id },
+                        dataType: 'json',
+                        success(res) {
+                            if (res.code == 0) {
+                                obj.del();
+                                layer.close(index);
+                            }
+                            layer.msg(res.msg)
+                        }
+                    });
+
+                });
+            } else if (obj.event === 'check') {
+                xadmin.open('审核', '{:url("audit_need")}', 460, 460)
+
+            } else if (obj.event === 'tem_record') {
+                xadmin.open('模板记录', '{:url("sendwxmsg_list")}', 460, 460)
+            }
+            else if (obj.event === 'choose_quote') {
+
+                xadmin.open('选择报价', '{:url("choose_quote")}?p_id=' + data.id, 608, 498)
+            }
+            else if (obj.event === 'cel_qualification') {
+
+                xadmin.open('取消资格', '{:url("cel_qualification")}?p_id=' + data.id, 592, 398)
+            }
+            else if (obj.event === 'more') {
+
+                var select = [];
+                function detail(index) {
+                    var select = [];
+                    select.push(index)
+                    console.log(select.indexOf(index))
+                }
+                detail(1)
+
+                // $(".pic").toggle()
+
+            }
+            else if (obj.event === 'reject') {
+                xadmin.open('驳回报价', '{:url("reject")}?mid=' + data.id, 592, 398)
+            }
+            else if (obj.event === 'history_quote') {
+                xadmin.open('历史报价', '{:url("history_quote")}', 606, 434)
+            }
+        });
+       
+       
+        var $ = layui.$, active = {
+            reload: function () {
+                var search_key = $('#search_key').val();
+                var search_val = $('#search_val').val();
+                if (search_key == '') {
+                    layer.msg('请选择搜索类型', { icon: 5 });
+                    return false;
+                }
+                if (search_val == '') {
+                    layer.msg('请输入搜索内容', { icon: 5 });
+                    return false;
+                }
+                //执行重载
+                table.reload('purList', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        search_key,
+                        search_val
+                    }
+                });
+            }
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('#add').click(function () {
+            xadmin.open('发布采购需求', '{:url("add_need")}', 910, 575)
+        })
+    })
+</script>
+
+{/block}

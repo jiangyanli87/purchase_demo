@@ -1,0 +1,93 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+    }
+</style>
+<body>
+    
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-inline">
+                <select lay-filter="pid" name="pid" id='pid' lay-verify="required" lay-search>
+                    <option value="0">顶级菜单</option>
+                    {volist name="rules" id="vo"}
+                        <option value="{$vo.id}">{$vo.level-1|str_repeat=' 丨---',###}{$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" value="1" checked lay-verify="status" id="status" name="status" lay-skin="switch" lay-text="显示|隐藏" lay-filter="status">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入权限名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">访问路由</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入访问路由" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="icon" lay-verify="icon" autocomplete="off" placeholder="请输入图标" class="layui-input">
+            </div>
+            <!--<div class="layui-form-mid layui-word-aux" title="点击查看图标" style="cursor: pointer;"><a href="/__STATIC__/iconfont/dome.html" target="_blank">查看图标</a></div>-->
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" name="sort" lay-verify="required" autocomplete="off" placeholder="请输入排序参数" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button class="layui-btn" lay-submit="" lay-filter="add">提交</button>
+                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+<script type="text/javascript">
+    layui.use(['form'], function(){
+
+        var form = layui.form;
+        //监听提交
+        form.on('submit(add)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("addRule")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('user');//刷新父窗口表格
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

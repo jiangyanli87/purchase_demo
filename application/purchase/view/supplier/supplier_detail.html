@@ -1,0 +1,133 @@
+<style>
+    fieldset{
+        display: none;
+    }
+</style>
+{extend name="layout/table_base"}
+{block name="field_title"}
+<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>采购材料1</legend>
+ 
+</fieldset> -->
+<!-- <span class="layui-breadcrumb">
+    <span style="font-size: 18px;">当前位置: &nbsp;</span>
+    <a href="#">首页</a>
+    <a href="#">供应商管理</a> -->
+    <!-- <a href="">亚太地区</a> -->
+    <!-- <a><cite>供应商信息维护</cite></a>
+  </span> -->
+        
+{/block}
+{block name="header"}
+<form class="layui-form" action="#" style="margin-top: 20px;">
+    <div class="item">
+        <div class="layui-input-inline">
+            <select name="search_key" lay-verify="required" id="search_key">
+                <option value="">选择搜索类型</option>
+                {volist name="search_info" id="vo"}
+                <option value="{$key}">{$vo}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="item">
+        <div class="layui-input-inline">
+            <input type="text" name="search_val" id="search_val" placeholder="搜索内容" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <button type="button" style="width: 50px;" id="search" class="layui-btn layui-btn-sm " data-type="reload">
+        <i class="layui-icon">&#xe615;</i>
+    </button>
+    <!-- <button type="button" style="width: 50px;" id="add" class="layui-btn layui-btn-sm ">
+        <i class="layui-icon">&#xe654;</i>
+    </button> -->
+    <!-- <div style="position: absolute;right: 50px;">
+        <a href="javascript:location.reload();" style="width: 50px;" class="layui-btn layui-btn-sm ">
+            <i class="layui-icon">&#xe669;</i>
+        </a>
+    </div> -->
+</form>
+
+{/block}
+{block name="table_bar"}
+<!-- <img src="/public/static/images/icon/edit.png"  style="margin-top: -3px;"alt="">
+<a  lay-event="edit" style="margin-left: -10px;"> 编辑</a> -->
+<img src="/public/static/images/icon/del.png" style="margin-top: -3px;" alt="">
+<a  lay-event="del" style="margin-left: -10px;">删除</a>
+
+{/block}
+{block name="table_data"}
+<script type="text/javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#table_ele'
+            , url: '{:url("supplier_detail_listData")}'
+            , limit: 10
+            , limits: [10,15,20]
+            , loading: true
+            , title: '材料列表'
+            , cols: [[
+                // {type: 'checkbox', fixed: 'left'}
+                 {field: 'station_name', title: '物料大类', width: 180, align:"center", unresize: true, sort: true}
+                , {field: 'goods_name', title: '物料名称', width: 140, align:"center"}
+                , {field: 'goods_spec', title: '物料规格', width: 140, align:"center"}
+                , {field: 'ht_num', title: '物料编码', width: 170, align:"center"}
+                , { title: '操作', align: 'center', toolbar: '#table_bar', width: 186, align:"center"}
+            ]]
+            // , page: true
+            ,id : 'materList'
+        });
+        //监听行工具事件
+        table.on('tool(table_ele)',function(obj){
+            var data=obj.data;
+            if (obj.event === 'del') {
+                layer.confirm("真的要删除:" +data.ht_num,{title:'警告',icon:3}, function (index) {
+                    $.ajax({
+                        type:'get',
+                        url:'{:url("del_supplier_detail")}',
+                        data:{mid:data.id},
+                        dataType:'json',
+                        success(res){
+                            if(res.code == 0){
+                                obj.del();
+                                layer.close(index);
+                            }
+                            layer.msg(res.msg)
+                        }
+                    });
+                });
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                var search_key = $('#search_key').val();
+                var search_val = $('#search_val').val();
+                if(search_key == ''){
+                    layer.msg('请选择搜索类型',{icon:5});
+                    return false;
+                }
+                if(search_val == ''){
+                    layer.msg('请输入搜索内容',{icon:5});
+                    return false;
+                }
+                //执行重载
+                table.reload('materList', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        search_key,
+                        search_val
+                    }
+                });
+            }
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    })
+</script>
+{/block}

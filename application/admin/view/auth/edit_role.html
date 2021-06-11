@@ -1,0 +1,83 @@
+{include file="public/header"}
+<body>
+<div class="x-body">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" value="{$role.title}" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                <input type="hidden" name="id" value="{$role.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点</label>
+            <div class="layui-input-block">
+                <select name="station" xm-select="select1" id="group_id" xm-select-height xm-select-search="" xm-select-skin="normal" xm-select-search-type="dl">
+                    <option value="">请选择推送角色</option>
+                    {volist name="station" id="vo"}
+                    <option value="{$vo}">{$vo}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">首页</label>
+			<div id="" class="layui-input-block">
+				<select name="default_href" id="default_href" >
+					<option value ="admin/index/defaultHome">默认首页</option>
+					<option value ="admin/index/home">综合首页</option>
+				</select>
+			</div>
+		</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" style="text-align: center;">
+                <button class="layui-btn" lay-submit="" lay-filter="edit_role">提交</button>
+                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--{$role.station}-->
+</body>
+<script type="text/javascript">
+    layui.config({
+        base: '__LAYUI__/ext/' //此处路径请自行处理, 可以使用绝对路径
+    }).extend({
+        formSelects: 'formSelect/formSelects-v4'
+    });
+    layui.use(['form','formSelects','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            ,formSelects = layui.formSelects;
+        var sel = '{$role.station}';
+        formSelects.value('select1', sel.split(','));
+        form.on('submit(edit_role)', function (data) {
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // });
+            // return false;
+            $.ajax({
+                type: 'post',
+                url: '{:url("editRole")}',
+                data: data.field,
+                dataType: 'json',
+                success(res) {
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('user');
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                },
+                error() {
+                    layer.msg('网络错误')
+                }
+            })
+            return false;
+        });
+    });
+</script>
+{include file="public/footer"}

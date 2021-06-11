@@ -1,0 +1,183 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-input{
+        margin-top:4px;
+    }
+    .layui-form-switch{
+        margin-top:4px;
+    }
+    .layui-input{
+        background-color: #eee;
+    }
+</style>
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户角色</label>
+            <div class="layui-input-inline">
+                <select lay-filter="group_id" name="group_id" id='group_id' lay-verify="group_id">
+                    <option value=""></option>
+                    {volist name='auth_group' id='vo'}
+                    <option value="{$vo.id}" {if condition="isset($user['auth']['com_group']) && $vo.id == $user['auth']['com_group']"} selected {/if}>{$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">辅助角色</label>
+            <div class="layui-input-inline">
+                <input type="checkbox"  {if condition="isset($user['auth']['assist_group'])"} checked value="on" {else/} value="off" {/if} lay-verify="open_assist" id="open_assist" name="open_assist" lay-skin="switch" lay-text="开启|关闭" lay-filter="open_assist">
+            </div>
+        </div>
+        <div class="layui-form-item" id="assist_ele" {if condition="!isset($user['auth']['assist_group'])"} style="display: none;" {/if}>
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <select name="assist_group_id" lay-verify="assist_group_id" id='assist_group_id' lay-filter="assist_group_id" class="layui-form">
+                    <option value=""></option>
+                    {volist name='auth_group' id='vo'}
+                    <option value="{$vo.id}" {if condition="isset($user['auth']['assist_group']) && $vo.id == $user['auth']['assist_group']"} selected {/if}>{$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" value="{$user.username}" lay-verify="username" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+                <input type="hidden" value="{$user.id}" name="id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password" lay-verify="password" autocomplete="off" placeholder="空值默认不修改" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确&nbsp;&nbsp;&nbsp;&nbsp;认</label>
+            <div class="layui-input-inline">
+                <input type="text" name="comfirm_pass" lay-verify="comfirm_pass" autocomplete="off" placeholder="确认密码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button class="layui-btn" lay-submit="" lay-filter="edit">提交</button>
+                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form;
+
+        //监听指定开关
+        form.on('switch(open_assist)', function(data){
+            if(!this.checked){
+                $('#assist_ele').hide();
+                $('#assist_group_id').val('');
+                form.render('select');
+                $('#open_assist').val('off');
+                return false;
+            }
+            $('#open_assist').val('on');
+            $('#assist_ele').show();
+        });
+
+        form.on('select(assist_group_id)', function(data){
+            // console.log(data.elem); //得到select原始DOM对象
+            // console.log(data.value); //得到被选中的值
+            // console.log(data.othis); //得到美化后的DOM对象
+            var value1 = $('#group_id').val();
+            if(value1 != '' && value1 == data.value){
+                layer.msg('辅助角色和角色相同',{icon:5});
+                $('#assist_group_id').val('');
+                form.render('select');
+            }
+            // console.log(value1)
+        });
+
+        form.on('select(group_id)', function(data){
+            // console.log(data.elem); //得到select原始DOM对象
+            // console.log(data.value); //得到被选中的值
+            // console.log(data.othis); //得到美化后的DOM对象
+            var value1 = $('#assist_group_id').val();
+            if(value1 != '' && value1 == data.value){
+                layer.msg('辅助角色和角色相同',{icon:5});
+                $('#group_id').val('');
+                form.render('select');
+            }
+            // console.log(value1)
+        });
+        //自定义验证规则
+        form.verify({
+            username: function(value, item){
+                if(value == '') {
+                    return '请输入用户名'
+                }
+                //value：表单的值、item：表单的DOM对象
+                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                    return '用户名不能有特殊字符';
+                }
+                if(/(^\_)|(\__)|(\_+$)/.test(value)){
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if(/^\d+\d+\d$/.test(value)){
+                    return '用户名不能全为数字';
+                }
+            }
+
+            //我们既支持上述函数式的方式，也支持下述数组的形式
+            //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+            ,password: function (value,item) {
+                if(value != '' && !/^[\S]{6,12}$/.test(value)){
+                    return '密码必须6到12位，且不能出现空格';
+                }
+            }
+            ,comfirm_pass:function (value,item) {
+                if($('input[name=password]').val() !== value)
+                    return '两次密码输入不一致！';
+            }
+            ,group_id:function (value) {
+                if(value == '') {
+                    return '请选择用户权限'
+                }
+            }
+            ,assist_group_id:function (value) {
+                //console.log($('#open_assist').val());
+                if($('#open_assist').val() == 'on' && value =='') {
+                    return '请选择辅助角色'
+                }
+            }
+        });
+
+
+        //监听提交
+        form.on('submit(edit)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("edit")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('user');
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

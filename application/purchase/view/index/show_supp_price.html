@@ -1,0 +1,193 @@
+{extend name="layout/table_base"}
+{block name="field_title"}
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>选择报价</legend>
+</fieldset>
+{/block}
+{block name="toolbar"}
+<div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
+</div>
+
+{/block}
+{block name="header"}
+<style type="text/css">
+    .info{
+        font-size: 18px;font-weight: bold
+    }
+    #all_supp_counts,  #supp_num{
+        font-size: 18px;font-weight: bold
+    }
+</style>
+<p  class="info">
+    采购单号：<span>{$info.main.pur_num}</span> ，材料名称：<span>{$info.m_name}</span>，材料规格：<span>{$info.spec}</span>，采购数量：<span>{$info.num}</span> ，已选择数量：<span id="all_supp_counts" style="">{$info.sel_count.choose_num_count} {$info.units}</span>，已选择供应商：<span id="supp_num" style="">{$info.sel_count.choose_supp_count} 个</span>
+</p>
+<br>
+<p>
+    <span style="color: red;">报价截至时间未结束，暂无法查看报价信息</span>
+</p>
+{/block}
+{block name="table_box"}
+<table id="table_ele" lay-filter="table_ele"></table>
+{/block}
+{block name="table_bar"}
+<a class="layui-btn layui-btn-sm" lay-event="edit">选择</a>
+<a class="layui-btn layui-btn-sm" lay-event="del">退回</a>
+<a class="layui-btn layui-btn-sm" lay-event="cancel">取消</a>
+<a class="layui-btn layui-btn-sm" lay-event="old_price">历史</a>
+{/block}
+{block name="table_data"}
+<script type="text/javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#table_ele'
+            , url: '{:url("getSuppPriceData")}'
+            // , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print'
+                //     , { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                //     title: '提示'
+                //     ,layEvent: 'LAYTABLE_TIPS'
+                //     ,icon: 'layui-icon-tips'
+                // }
+            ]
+            ,where:{
+                pi_id: "{$_GET['pi_id']}"
+            }
+            , page: false
+            , limit: 10
+            , limits: [10,15,20]
+            , height: 600
+            , loading: true
+            , title: '选择报价'
+            , cols:  [[
+                { title: '采购编号', fixed:"left",align:'center', width:80, templet(d){
+                        return d.pmain.pur_num;
+                    }},
+                {field: 'supp_name', title: '供应商', align:'center',width:120, templet(d){
+                        return d.supplier.supp_name;
+                    }},
+                //{field: 'counts', title: '需求数量', align:'center',width:120},
+                {field: 'choose_num', title: '选择数量', align:'center',width:120},
+                {field: 'price', title: '供应商报价', align:'center',width:120},
+                {field: 'num', title: '可供数量', align:'center',width:120},
+                // {field: 'repayment', title: '账期', align:'center',width:80},
+                {field: 'prod_place', title: '产地', align:'center',width:100},
+                //{field: 'yunfei', title: '万昌运费', align:'center',width:100},
+                {field: 'remark', title: '备注', align:'center',width:120},
+                {field: 'promise_time', title: '交货时间', align:'center',width:180},
+                {field: 'units', title: '单位', align:'center',width:120, templet(d){
+                        return d.pitem.units;
+                    }},
+                {field: 'material_id', title: '材料编号', align:'center', width:100, templet(d){
+                        return d.pitem.m_num;
+                    }},
+                {field: 'id', title: '报价编号', align:'center',width:100},
+                // {field: 'sub_status', title: '选择状态', align:'center',width:80},
+                // {field: 'audit_status', title: '审核', align:'center',width:80},
+                {field: 'sub_status_txt', title: '报价状态', align:'center',fixed:"right",width:100},
+                {field: 'status', title: '选择状态', align:'center',fixed:"right",width:120},
+                // {field: 'audit_status_txt', title: '审核状态', align:'center',fixed:"right",width:100},
+                {title: '操作', width:240, toolbar:'#table_bar',fixed:"right",align:"center"}
+            ]]
+            ,done(res){
+                if (res.data.length >0){
+
+                }
+            }
+            ,id : 'table_ele'
+        });
+
+
+
+
+        //头工具栏事件
+        table.on('toolbar(table_ele)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(table_ele)', function (obj) {
+            var data = obj.data;
+            //console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除采购单：'+ data.pur_num ,{title:'警告',icon:3}, function (index) {
+                    $.ajax({
+                        type:'get',
+                        url:'{:url("del_need")}',
+                        data:{p_id:data.id},
+                        dataType:'json',
+                        success(res){
+                            if(res.code == 0){
+                                obj.del();
+                                layer.close(index);
+                            }
+                            layer.msg(res.msg)
+                        }
+                    });
+
+                });
+            } else if (obj.event === 'check') {
+                xadmin.open('审核','{:url("audit_need")}',460,460)
+
+            }else if (obj.event==='tem_record') {
+                xadmin.open('模板记录','{:url("sendwxmsg_list")}',460,460)
+            }
+            else if (obj.event ==='pur_item') {
+
+                xadmin.open('查看','{:url("pur_item")}?p_id='+data.id,1050,400)
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                var search_key = $('#search_key').val();
+                var search_val = $('#search_val').val();
+                if(search_key == ''){
+                    layer.msg('请选择搜索类型',{icon:5});
+                    return false;
+                }
+                if(search_val == ''){
+                    layer.msg('请输入搜索内容',{icon:5});
+                    return false;
+                }
+                //执行重载
+                table.reload('purList', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        search_key,
+                        search_val
+                    }
+                });
+            }
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('#add').click(function(){
+            xadmin.open('发布采购需求','{:url("add_need")}',1050,730)
+        })
+    })
+</script>
+{/block}

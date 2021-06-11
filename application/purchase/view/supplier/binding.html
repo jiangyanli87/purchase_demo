@@ -1,0 +1,227 @@
+
+{include file="public/header"}
+<style type="text/css">
+.x-body{
+    padding:40px 36px
+}
+    .layui-form-mid{
+        padding: 4px !important;
+        
+    }
+    .add_login{display: flex;
+        justify-content: space-around;
+    }
+    .login_left{
+        margin-left:-51px;
+    }
+    .login_right{
+        margin-left:-34px;
+    }
+    .layui-form-label{
+       
+        padding:11px 19px !important;
+        font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #666666;
+line-height: 10px;
+    }
+    .layui-input-inline input{
+        height: 27px;
+        /* background-color: aliceblue; */
+    }
+    .layui-input-inline .layui-input{
+        background-color: #fff;
+        /* border: #666666; */
+        height: 30px;
+        width: 160px;
+    }
+    .layui-form-item{
+        margin-bottom: 20px;
+    }
+    .binding_tree{
+        width: 512px;
+        border: #E6E6E6 solid 1px;
+
+    }
+    .binding_tree .title{
+        width: 512px;
+        height: 30px;
+        background:#E6E6E6 ;
+        border-bottom: #E6E6E6 solid 1px;
+    }
+    .binding_tree .title span{
+        line-height: 30px;
+        
+        font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #666666;
+margin-left: 10px;
+/* line-height: 10px; */
+    }
+</style>
+<body>
+
+<div class="x-body" onbeforeunload="return myFunction()">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="margin-left: -51px;">供应商</label>
+        <div class="layui-input-inline">
+            <input type="text" value="{$binding.supp_name}" name="supp_name" lay-verify="required" autocomplete="off" class="layui-input" style="width: 449px;background: #eee;">
+        </div>
+    </div>
+    <div class="layui-form-item"  style="display: flex;">
+        <div class="add_login login_left">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="mid" value="{$binding.id}" style="display: none;">
+                <input type="text" value="{$binding.conn_man}"style="background:#eee" name="conn_man" class="layui-input" >
+       
+                
+            </div>
+        </div>
+        <div class="add_login login_right">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-inline">
+                <input type="text" style="background:#eee" value="{$binding.conn_phone}" name="conn_phone" class="layui-input" >    
+            </div>
+        </div>
+    </div>
+    <form class="layui-form">
+        <div class="layui-form-item"  style="display: flex">
+            <div class="add_login login_left">
+                <label class="layui-form-label" style="display: flex;left: 37px;">结算方式</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="id"  style="display: none;">
+                    <input type="text"  class="layui-input">       
+                </div>
+            </div>
+            <div class="add_login login_right">
+                <label class="layui-form-label">供货状态</label>
+                <div class="layui-input-inline">
+                    <select name="search_key"  id="search_key">
+                        <option value="">选择搜索类型</option>
+                   </select>
+                </div>
+            </div>
+        </div>
+        <div class="binding_tree">
+            <div  class="title">
+                <span>选择供货类型</span>
+            </div>
+            <div class="binding_content">
+                <div id="test1" class="demo-tree-more"></div>
+            </div>
+            
+        </div>
+        
+        <div class="layui-form-item" style="float: right;margin-right: -51px;margin-top: 20px;">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button type="button" class="layui-btn layui-btn-normal close"   style="background-color: #fff;color: #333;border: #666666 solid 1px;">取消</button>
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="edit" >确定</button>
+              
+            </div>
+        </div>
+    </form>
+   
+</div>
+</body>
+<script type="text/javascript">
+$(".close").click(function(){
+    xadmin.close()
+})
+layui.use('tree',function(){
+    var tree = layui.tree;
+   
+   //渲染
+   tree.render({
+     elem: '#test1',  //绑定元素
+     showCheckbox:tree
+     ,data: [{
+       title: '原材料' ,//一级菜单
+       id:1
+       ,children: [{
+         title: '碎石', //二级菜单
+         id:11
+         ,children: [
+        {
+           title: '5-10mm碎石' //三级菜单  
+        },
+        {
+           title:"5-25mm碎石"
+        },{
+            title:'10-20mm碎石'
+        },{
+            title:'20-40mm碎石'
+        }, 
+],
+        
+        },{
+            title:"水泥",
+            id:12,
+            children:[
+                {
+                    title:'水泥1'
+                },
+                {
+                    title:'水泥2'
+                }
+            ]
+        },{
+            title:'机制砂',
+            id:13,
+            children:[
+                {
+                    title:"机制砂1"
+                },
+                {
+                    title:"机制砂2"
+                },
+            ]
+        }]
+     },{
+       title: '混凝土' ,//一级菜单
+       id:2
+       ,children: [{
+         title: '混凝土1' ,//二级菜单
+         id:21
+       }]
+     }],
+     oncheck:function(obj){
+            console.log(obj.data)//得到当前点击的节点数据
+        }
+   });
+})
+
+</script>
+<script type="text/javascript">
+
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(edit)', function(data){
+      
+            $.ajax({
+                type:'post',
+                url:'{:url("editRule")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    console.log(data)
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('materList');
+                            
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

@@ -1,0 +1,92 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+    }
+</style>
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-inline">
+                <select lay-filter="pid" name="pid" id='pid' lay-verify="required" lay-search>
+                    <option value="0" {if condition="0 == $rule.pid"} selected {/if}>顶级菜单</option>
+                    {volist name="rules" id="vo"}
+                        <option value="{$vo.id}" {if condition="$vo.id == $rule.pid"} selected {/if}>{$vo.level-1|str_repeat=' 丨---',###}{$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{$rule.id}">
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" value="1" {if condition="$rule.status==1"}checked {/if} lay-verify="status" id="status" name="status" lay-skin="switch" lay-text="显示|隐藏" lay-filter="status">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" value="{$rule.title}" lay-verify="required" autocomplete="off" placeholder="请输入权限名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">访问路由</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" value="{$rule.name}" autocomplete="off" placeholder="请输入访问路由" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="icon" lay-verify="icon" value="{$rule.icon}" autocomplete="off" placeholder="请输入图标" class="layui-input">
+            </div>
+            <!--<div class="layui-form-mid layui-word-aux" title="点击查看图标" style="cursor: pointer;"><a href="" target="_blank">查看图标</a></div>-->
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="number" name="sort" value="{$rule.sort}" lay-verify="required" autocomplete="off" placeholder="请输入排序参数" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button class="layui-btn" lay-submit="" lay-filter="edit_rule">提交</button>
+                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(edit_rule)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("editRule")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('user');
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

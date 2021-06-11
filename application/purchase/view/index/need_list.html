@@ -1,0 +1,200 @@
+{extend name="layout/table_base"}
+{block name="field_title"}
+<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>采购需求列表</legend>
+</fieldset> -->
+<div class="layui-breadcrumb bread" style=" margin-top: 15px;margin-bottom: 13px;" >
+    <span style="font-size: 18px;">当前位置: &nbsp;</span>
+    <a href="{:url('admin/index/home')}">首页</a> 
+    <a href="#">需求管理</a>
+    <!-- <a href="">亚太地区</a> -->
+    <a><cite>需求维护</cite></a>
+  </div>
+{/block}
+{block name="toolbar"}
+<div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
+</div>
+{/block}
+{block name="header"}
+<form class="layui-form" action="#" style="margin-top: 20px;">
+    <div class="item">
+        <div class="layui-input-inline">
+            <select name="search_key" lay-verify="required" id="search_key">
+                <option value="">选择搜索类型</option>
+                {volist name="search_info" id="vo"}
+                <option value="{$key}">{$vo}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="item">
+        <div class="layui-input-inline">
+            <input type="text" name="search_val" id="search_val" placeholder="搜索内容" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <button type="button" style="width: 50px;" id="search" class="layui-btn layui-btn-sm " data-type="reload">
+        <i class="layui-icon">&#xe615;</i>
+    </button>
+    <button type="button" style="width: 50px;" id="add" class="layui-btn layui-btn-sm ">
+        <i class="layui-icon">&#xe654;</i>
+    </button>
+    <!-- <div style="position: absolute;right: 50px;">
+        <a href="javascript:location.reload();" style="width: 50px;" class="layui-btn layui-btn-sm ">
+            <i class="layui-icon">&#xe669;</i>
+        </a>
+    </div> -->
+</form>
+{/block}
+
+{block name="table_bar"}
+    <img lay-event="pur_item" src="/public/static/images/icon/see_detial.png" style="margin-top: -4px;width: 12px;" alt="">
+    <a  lay-event="pur_item" style="margin-left: -8px;">查看详情</a>
+   
+    {{#  if(d.audit_status.value === 0){ }}
+    <img lay-event="del" src="/public/static/images/icon/del.png" style="margin-top: -3px;" alt="">
+        <a  lay-event="del" style="margin-left: -8px;" >删除</a>
+     {{#  } else { }}
+     <img src="/public/static/images/icon/dis_del.png" style="margin-top: -3px;" alt="">
+     <a class=" layui-disabled"  style="margin-left: -8px;" >删除</a>
+    {{#  } }}           
+           
+    
+{/block}
+
+{block name="table_data"}
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#table_ele'
+            , url: '{:url("getNeedList")}'
+            // , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print'
+                //     , { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                //     title: '提示'
+                //     ,layEvent: 'LAYTABLE_TIPS'
+                //     ,icon: 'layui-icon-tips'
+                // }
+            ]
+            , limit: 10
+            , limits: [10,15,20]
+            // , height: 700
+            , loading: true
+            , title: '采购需求列表'
+            , cols: [[
+                {field: 'pur_num', title: '流水号', width:"10%",align: 'center'}
+                , {field: 'proposer', title: '申请人', width:"10%", align: 'center'}
+               , {field:"uid",title:'公司代码',width:"10%",align: 'center'}
+                , {field: 'expir_time', title: '报价截至时间', width: "16%",align: 'center'}
+                , {field: '', title:'要求到厂时间',width: "25%",align: 'center',templet(d){
+                    return d.require_time1 + ' 至 ' + d.require_time2
+                    }}
+                , {field: 'audit_status', title: '审核状态', width: "13%",align: 'center', templet(d){
+                    // if (d.audit_status.text=="未审核") return '<span style="color:#F37108">未审核</span>';
+                    // if (d.audit_status.text=="已审核") return '<span style="color:#17AE10">已通过</span>';
+                    // if (d.audit_status.text=="未通过") return '<span style="color:#F30808">未通过</span>';
+                        return d.audit_status.s_text;
+                    }}
+                , { title: '操作', align: 'center', toolbar: '#table_bar', width: "16%"},
+            ]]
+            , page: true
+            ,id : 'purList',
+            done: function (res, curr, count){
+$("table").css("width", "100%");
+//这里设置表格的宽度为100%
+},
+        });
+        //头工具栏事件
+        table.on('toolbar(table_ele)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(table_ele)', function (obj) {
+            var data = obj.data;
+            //console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除采购单：'+ data.pur_num ,{title:'警告',icon:3}, function (index) {
+                    $.ajax({
+                        type:'get',
+                        url:'{:url("del_need")}',
+                        data:{p_id:data.id},
+                        dataType:'json',
+                        success(res){
+                            if(res.code == 0){
+                                obj.del();
+                                layer.close(index);
+                            }
+                            layer.msg(res.msg)
+                        }
+                    });
+
+                });
+            } else if (obj.event === 'check') {
+                xadmin.open('审核','{:url("audit_need")}',460,460)
+
+            }else if (obj.event==='tem_record') {
+                xadmin.open('模板记录','{:url("sendwxmsg_list")}',460,460)
+            }
+            else if (obj.event ==='pur_item') {
+
+                xadmin.open('详情','{:url("pur_item")}?p_id='+data.id,1078,516)
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                var search_key = $('#search_key').val();
+                var search_val = $('#search_val').val();
+                if(search_key == ''){
+                    layer.msg('请选择搜索类型',{icon:5});
+                    return false;
+                }
+                if(search_val == ''){
+                    layer.msg('请输入搜索内容',{icon:5});
+                    return false;
+                }
+                //执行重载
+                table.reload('purList', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        search_key,
+                        search_val
+                    }
+                });
+            }
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('#add').click(function(){
+            xadmin.open('添加','{:url("add_need")}',910,575)
+        })
+    })
+</script>
+
+{/block}

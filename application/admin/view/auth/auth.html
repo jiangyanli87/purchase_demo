@@ -1,0 +1,100 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-tree-icon{
+        width: 15px;
+        height: 15px;
+        line-height: 16px;
+    }
+</style>
+<body>
+    <div class="x-body">
+        <div class="layui-btn-container">
+            <input type="hidden" name="id" id="role_id" value="{$role.id}">
+            <button type="button" class="layui-btn layui-btn-sm" lay-demo="getChecked">提交</button>
+            <!--<button type="button" class="layui-btn layui-btn-sm" lay-demo="setChecked">勾选指定节点</button>-->
+            <button type="button" class="layui-btn layui-btn-sm" lay-demo="reload">重置权限</button>
+        </div>
+        <div id="auth_list" class="demo-tree-more"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    layui.use(['tree', 'util'], function() {
+        var tree = layui.tree
+            , layer = layui.layer
+            , util = layui.util;
+        $.ajax({
+            type:'post',
+            url:'{:url("getAuth",[\'rules\' => $role.rules])}',
+            dataType:'json',
+            async: true,
+            success(res) {
+                var data = res.data;
+                //console.log(data.tree);
+                var treeEle = tree.render({
+                    elem: '#auth_list'
+                    , data: data.tree
+                    , showCheckbox: true  //是否显示复选框
+                    , id: 'auth_tree'
+                    , isAssign: true
+                    // ,isJump: true //是否允许点击节点时弹出新窗口跳转
+                    // ,click: function(obj){
+                    //     var data = obj.data;  //获取当前点击的节点数据
+                    //     layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
+                    // }
+                });
+                //赋值之后切换状态
+                treeEle.config.isAssign = false;
+                // console.log();
+            }
+        });
+        //开启复选框
+        //基本演示
+        // console.log(data);
+        // setParentsChecked(elem);
+        //按钮事件
+        util.event('lay-demo', {
+            getChecked: function(othis){
+                var checkedData = tree.getChecked('auth_tree'); //获取选中节点的数据
+                if(checkedData.length <= 0){
+                    layer.msg('请勾选权限',{icon:2});
+                    return false;
+                }
+                var id = $('#role_id').val();
+                var index = layer.confirm('确认授权!',{icon:3,title:'提示'},function () {
+                    $.ajax({
+                        type:'post',
+                        url:'{:url("authToRole")}',
+                        data:{auth_list:checkedData,id:id},
+                        success(res){
+                            if(res.code == 0){
+                                layer.msg(res.msg, {icon:1}, function () {
+                                    parent.layer.closeAll();
+                                    parent.layui.table.reload('user');
+                                });
+                                return false;
+                            }
+                            layer.msg(res.msg, {icon:2});
+                        },
+                        error() {
+                            layer.msg('网络错误')
+                        }
+                    });
+                    layer.close(index);
+                });
+
+            }
+            ,setChecked: function(){
+                tree.setChecked('auth_tree', [12, 16]); //勾选指定节点
+            }
+            ,reload: function(){
+                //重载实例
+                tree.reload('auth_tree', {
+
+                });
+
+            }
+        });
+
+    });
+</script>
+{include file="public/footer"}

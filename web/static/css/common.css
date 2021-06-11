@@ -1,0 +1,64 @@
+.d-dr,
+.d-dr-jsb,
+.d-dr-jc,
+.d-dr-jsa,
+.d-dc,
+.d-dc-jsb,
+.d-dc-jsa {
+    display: flex;
+}
+.d-dr,
+.d-dr-jc,
+.d-dr-jsb,
+.d-dr-jsa,
+.d-dr-jcac
+{
+   flex-direction: row; 
+}
+.d-dr-ac,
+.d-dr-jcac,
+.d-dc-ac,
+.d-dc-jcac {
+    display: flex;
+    align-items: center;
+}
+
+.d-dr-jcac,
+.d-dr-jc,
+.d-dc-jcac {
+    justify-content: center;
+}
+
+.d-dc-jcac,
+.d-dc-jc,
+.d-dc-ac,
+.d-dc,
+.d-dc-jsb,
+.d-dc-jsa{
+    flex-direction: column;
+}
+
+.d-dr-jsa ,
+.d-dc-jsa{
+    justify-content: space-around;
+}
+
+.d-dr-jsb,
+.d-dc-jsb{
+    justify-content: space-between;
+}
+
+.d-f1 {
+    flex: 1;
+}
+
+/*  优化图片“闪一下” 的情况 */
+image{
+    will-change: transform !important;
+}
+
+.status_bar {
+      height: var(--status-bar-height);
+      width: 100%;
+      background: red;
+ }

@@ -1,0 +1,164 @@
+{include file="public/header"}
+<link rel="stylesheet" href="__CSS__/tableBase.css">
+<style type="text/css">
+    tr a {
+        height: 25px !important;
+        line-height: 25px !important;
+        padding: 0 8px !important;
+    }
+    .item {
+        margin-right: 15px !important;
+    }
+    .item label {
+        display: inline-block;
+        width: 60px !important;
+        text-align: right;
+    }
+</style>
+<body>
+<div class="x-body">
+    {block name="field_title"}
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>材料列表</legend>
+    </fieldset>
+    {/block}
+    {block name="header"}
+    <form class="layui-form" action="#">
+        <div class="item">
+            <div class="layui-input-inline">
+                <select name="m_name" lay-verify="required" id="cid">
+                    <option value="">材料名称</option>
+                    {volist name="materials" id="vo"}
+                    <option value="{$vo.m_name}">{$vo.m_name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="item">
+            <div class="layui-input-inline">
+                <input type="text" name="name" placeholder="搜索材料规格" autocomplete="off"
+                       class="layui-input" id="spec">
+            </div>
+        </div>
+        <button type="button" style="width: 50px;" id="search" class="layui-btn layui-btn-sm" data-type="reload">
+            <i class="layui-icon">&#xe615;</i>
+        </button>
+        <!--<button type="button" style="width: 50px;" id="add" class="layui-btn layui-btn-sm">-->
+        <!--<i class="layui-icon">&#xe654;</i>-->
+        <!--</button>-->
+        <!--<div style="position: absolute;right: 50px;">-->
+        <!--&lt;!&ndash;<button type="submit" style="width: 50px;" class="layui-btn layui-btn-sm layui-btn-normal">&ndash;&gt;-->
+        <!--&lt;!&ndash;<i class="layui-icon">&#xe601;</i>&ndash;&gt;-->
+        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--<a href="javascript:location.reload();" style="width: 50px;" class="layui-btn layui-btn-sm layui-btn-primary">-->
+        <!--<i class="layui-icon">&#xe669;</i>-->
+        <!--</a>-->
+        <!--</div>-->
+    </form>
+    {/block}
+    {block name="table_box"}
+    <table id="table_ele" lay-filter="table_ele"></table>
+    {/block}
+    <script type="text/html" id="table_bar">
+        {block name="table_bar"}
+        <a lay-event="choose"><i class="iconfont">&#xe8ad;</i>&nbsp;选择</a>
+        {/block}
+    </script>
+</div>
+{block name="table_data"}
+<script type="text/javascript">
+    layui.use('table', function () {
+        table = layui.table;
+        //展示已知数据
+        table.render({
+            elem: '#table_ele',
+            url: "{:url('get_mater_list')}",
+            page: true,
+            where: {
+                cid: '{$_GET["cid"]}'
+            },
+            limit: 5,
+            limits: [5, 10, 15, 20, 25],
+            cols: [
+                [ //表头
+                    {
+                        field: 'm_num',
+                        title: '材料编号',
+                        fixed: 'left',
+                        //width: '150',
+                        align: 'center'
+                    },
+                    {
+                        field: 'm_name',
+                        title: '材料名称',
+                        fixed: 'left',
+                        //width: '150',
+                        align: 'center'
+                    }, {
+                    field: 'spec',
+                    title: '规格',
+                    //width: '150',
+                    align: 'center'
+                }, {
+                    field: 'units',
+                    title: '单位',
+                    //width: '150',
+                    align: 'center'
+                },
+                    {
+                        field: 'station_name',
+                        title: '站点',
+                        //width: '150',
+                        align: 'center'
+                    },
+                    // {
+                    //         field: 'remarks',
+                    //         title: '备注',
+                    //         //width: '150',
+                    //         align: 'center'
+                    //     },
+                    {
+                        toolbar: '#table_bar',
+                        title: '操作',
+                        width: '120',
+                        align: 'center',
+                        fixed: 'right',
+                    }
+                ]
+            ]
+            , id: 'testReload',
+        });
+        table.on('tool(table_ele)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'choose') {
+                parent.backfill(data);
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                //得到类别搜索的id
+                var type = $('#type').val();
+                var mat_name = $('#mat_name').val()
+                let data = {};
+                if (type) data.type = type;
+                if (mat_name) data.mat_name = mat_name;
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: data
+                });
+            }
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+{/block}
+</body>
+{include file="public/footer"}

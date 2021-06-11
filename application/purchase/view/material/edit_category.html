@@ -1,0 +1,183 @@
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+    }
+    .content{
+        padding:40px 40px !important
+;    }
+    .demand>p,.audit>p,.table>p{
+        font-size: 16px;
+font-family: Microsoft YaHei;
+font-weight: bold;
+color: #333333;
+line-height: 10px;
+    }
+    .fl{
+        float: left;
+    }
+    .fr{
+        float: right;
+    }
+    .clear{clear: both;}
+    .demand .left{
+        /* margin-right: 60px; */
+        margin-top: 20px;
+    }
+    .demand .right{
+        margin-top: 20px;
+        
+    }
+    .left p,.right p{
+        font-weight: 400;
+color: #666666;
+line-height: 25px; 
+font-size: 14px;
+    }
+ .demand_title{
+    color: #666666 !important;
+    line-height: 14px !important; 
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    margin-top: 25px;
+ }
+  p span{
+    font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #333333;
+line-height: 24px;
+  }
+  .line{
+    width: 1px;
+height: 105px;
+background: #E6E6E6;  
+margin-left: 111px;
+margin-top: 27px;
+  }
+  .audit{
+      margin-left: 60px;
+  }
+  #table_ele{
+      margin-top: 10px;
+  }
+  .table .title{
+      margin-bottom: 25px;
+  }
+  .x-body{
+      padding:0 !important
+  }
+  .demand .number{
+      margin-bottom: 40px;
+  }
+  .demand .need{
+      padding-bottom: 15px;
+  }
+ .layui-btn{
+    width: 100px;
+height: 30px;
+background: #086DF3;
+border-radius: 4px;
+font-size: 16px !important;
+ }
+</style>
+<body>
+<div class="x-body">
+    <div class="content">
+            <!-- 上方文字描述 -->
+    <div class="describe">
+        <div class="demand ">
+            <p class="title number">合同编号: {$edit_material.id}</p>
+        </div>
+        <div class="demand ">
+            <p class="title ">需方信息</p>
+            <div class="left fl" style="margin-bottom: 20px;">
+               
+               <p >流水号<span style="margin-left: 55px;">&nbsp; {$edit_material.proposer}</span></p> 
+                <p >公司名称<span style="margin-left: 45px;"> {$edit_material.proposer}</span></p>
+                <p >需求发布时间<span style="margin-left: 13px;">&nbsp; {$edit_material.expir_time}</span></p>
+                <p >报价截止时间<span  style="margin-left: 13px;">&nbsp; {$edit_material.expir_time}</span></p>
+               
+            </div>
+            <div class="right need fr" style="margin-bottom: 20px;">
+                <p >要求到厂时间<span  style="margin-left: 13px;">&nbsp; {$edit_material.require_time1}至</span><span style="line-height: 25px;">{$edit_material.require_time2}</span></p> 
+                <p >截至送货时间<span  style="margin-left: 13px;">&nbsp; {$edit_material.expir_time}</span></p> 
+                <p >验收标准<span  style="margin-left: 39px;">&nbsp; {$edit_material.expir_time}</span></p>
+                <p >采购备注<span  style="margin-left: 39px;">&nbsp; {$edit_material.expir_time}</span></p>
+            </div>
+            <div class="clear"></div>
+            
+        </div>
+        <div class="demand ">
+            <p class="title" >供方信息</p>
+            <div class="left fl">
+                <p >供应商名称<span>&nbsp; {$edit_material.uid}</span></p> 
+            </div>
+            <div class="right  fl" style="margin-left: 217px;margin-bottom: 35px;">
+                  <p >报价备注<span  style="margin-left: 39px;">&nbsp; --</span></p> 
+            </div>
+            <div class="clear"></div>
+         
+        </div>
+        <div class="demand ">
+            <p class="title">采购信息</p>
+            <div class="left fl" style="margin-bottom: 20px;">
+               
+                <p >物料类别<span  style="margin-left: 33px;">&nbsp; 石子</span></p> 
+                 <p >物料规格<span  style="margin-left:33px;"> 0.5-1石子</span></p>
+                 <p >单价<span  style="margin-left: 57px;">&nbsp; 112.00</span></p>
+                 <p >数量（单位）<span  style="margin-left: 1px;">&nbsp; 6000（吨）</span></p>
+                 <p >付款方式<span  style="margin-left: 33px;">&nbsp; 一次承兑</span></p>
+                
+             </div>
+             <div class="right need fl" style="margin-left: 121px; margin-bottom: 20px;">
+                <p >运费<span  style="margin-left: 64px;">&nbsp; 0.00</span></p> 
+                 <p >账期<span  style="margin-left: 64px;">&nbsp;15</span></p> 
+                 <p >产地<span  style="margin-left: 64px;">&nbsp; 江苏</span></p>
+                 <p >承诺供货时间<span  style="margin-left: 3px;">&nbsp; {$edit_material.expir_time}</span></p>
+             </div>
+             <div class="clear"></div>
+        </div>
+    
+        <!-- <div class="clear"></div> -->
+       
+    </div>
+    </div>
+
+
+            <div class="layui-input-inline" style="text-align: center; float: right; margin-right: 40px;">
+                <button class="layui-btn" lay-submit="" lay-filter="edit">打印合同</button>
+                <!-- <button class="layui-btn layui-btn-normal" type="reset">重置</button> -->
+            </div>
+  
+</div>
+</body>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(edit)', function(data){
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                type:'post',
+                url:'{:url("edit_category")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('cateList');
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+    })
+</script>
+{include file="public/footer"}

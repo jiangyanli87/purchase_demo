@@ -1,0 +1,43 @@
+{include file="public/header"}
+<body>
+<div class="x-body">
+    <div class="lotus-nav layui-row layui-form-item" >
+        <button class="layui-btn layui-btn-sm" onclick="xadmin.open('上传文件','upload.html',500,460)"><i class="layui-icon layui-icon-add-circle"></i></button>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>APP：更新记录</legend>
+    </fieldset>
+    </fieldset>
+    <ul class="layui-timeline">
+        {volist name="app" id="vo"}
+        {if condition="$key == 0"}
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">更新时间：{$vo.upload_time}</h3>
+                <p>版本号：{$vo.version}</p>
+                <p>更新内容：{$vo.update_log}</p>
+                <p>下载地址：<a href="http://{$vo.upload_dir}">http://{$vo.upload_dir}</a></p>
+            </div>
+        </li>
+        {else /}
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis"></i>
+            <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">更新时间：{$vo.upload_time}</h3>
+                <p>版本号：{$vo.version}</p>
+                <p>更新内容：{$vo.update_log}</p>
+                <p>下载地址：<a href="http://{$vo.upload_dir}">http://{$vo.upload_dir}</a></p>
+            </div>
+        </li>
+        {/if}
+        {/volist}
+    </ul>
+    <div style="position: fixed;bottom: 10px;right: 10px; width: 120px">
+        <span style="color: red;">新版APP二维码：</span>
+        <image src="__STATIC__/images/app/app_qr.png?v=123" width="100%" style="margin:10px 0;"></image>
+    </div>
+</div>
+</body>
+
+{include file="public/footer"}

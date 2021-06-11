@@ -1,0 +1,148 @@
+
+{include file="public/header"}
+<style type="text/css">
+    .layui-form-mid{
+        padding: 4px !important;
+        
+    }
+    .add_login{display: flex;
+        justify-content: space-around;
+    }
+    .login_left{
+        margin-left:-51px;
+    }
+    .login_right{
+        margin-left:-34px;
+    }
+    .layui-form-label{
+       
+        padding:11px 15px !important;
+        font-size: 14px;
+font-family: Microsoft YaHei;
+font-weight: 400;
+color: #666666;
+line-height: 10px;
+    }
+    .layui-input-inline input{
+        height: 27px;
+        /* background-color: aliceblue; */
+    }
+    .layui-input-inline .layui-input{
+        background-color: #fff;
+        /* border: #666666; */
+        height: 30px;
+        width: 160px;
+    }
+    .layui-form-item{
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+<div class="x-body" onbeforeunload="return myFunction()">
+    <form class="layui-form">
+        <div class="layui-form-item"  style="display: flex;padding-top:27px">
+            <div class="add_login login_left">
+                <label class="layui-form-label">登录账号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="id" value="{$edit_material.id}" style="display: none;">
+                    <input type="text" name="username" value="{$edit_material.username}" class="layui-input">       
+                </div>
+            </div>
+            <div class="add_login login_right">
+                <label class="layui-form-label">登录密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" class="layui-input" value="{$edit_material.password}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="margin-left: -51px;">单位全称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="supp_name" value="{$edit_material.supp_name}" lay-verify="required" autocomplete="off" class="layui-input" style="width: 441px;">
+            </div>
+        </div>
+        <div class="layui-form-item"  style="display: flex;">
+            <div class="add_login login_left">
+                <label class="layui-form-label">单位简称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="openid" class="layui-input" value="{$edit_material.openid}">
+             
+                    
+                </div>
+            </div>
+            <div class="add_login login_right">
+                <label class="layui-form-label">单位税号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="remark" class="layui-input" value="{$edit_material.remark}">
+             
+                    
+                </div>
+            </div>
+  
+        </div>
+        <div class="layui-form-item"  style="display: flex;">
+            <div class="add_login login_left">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="conn_man" class="layui-input" value="{$edit_material.conn_man}">
+           
+                    
+                </div>
+            </div>
+            <div class="add_login login_right">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="conn_phone" class="layui-input" value="{$edit_material.conn_phone}">
+        
+                    
+                </div>
+            </div>
+  
+        </div>
+
+        <div class="layui-form-item" style="float: right;margin-right: -64px;">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="text-align: center;">
+                <button type="button" onclick="close_edit()" class="layui-btn layui-btn-normal"  style="background-color: #fff;color: #333;border: #666666 solid 1px;">取消</button>
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="edit" >确定</button>
+              
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(edit)', function(data){
+      
+            $.ajax({
+                type:'post',
+                url:'{:url("editRule")}',
+                data: data.field,
+                dataType:'json',
+                success(res){
+                    console.log(data)
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon:1}, function () {
+                            parent.layer.closeAll();
+                            parent.layui.table.reload('materList');
+                            
+                        });
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:2});
+                }
+            });
+            return false;
+        });
+   
+        window.close_edit = function (){
+            xadmin.close();
+        }
+    })
+</script>
+{include file="public/footer"}
