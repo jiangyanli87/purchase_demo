@@ -70,23 +70,27 @@ class PurMain extends BaseModel {
     //获取报价确认状态
     protected function getPriceStatusAttr($value)
     {
-        $text = '';
+        $text = $s_text = '';
         //0：未审核，1：已审核，2：未通过
         switch ($value) {
             case 0:
                 $text = '未确认';
+                $s_text = '<span style="color:#F37108">未审核</span>';
                 break;
             case 1:
                 $text = '已确认';
+                $s_text = '<span style="color:#17AE10">已审核</span>';
                 break;
             case 2:
                 $text = '报价审核通过';
+                $s_text = '<span style="color:#28b0e6">报价审核通过</span>';
                 break;
             case 3:
                 $text = '报价审核未通过';
+                $s_text='<span style="color:#ff0000">报价审核通过</span>';
                 break;
         }
-        return ['value' => $value, 'text' => $text];
+        return ['value' => $value, 'text' => $s_text];
     }
 
     //获取报价审核状态

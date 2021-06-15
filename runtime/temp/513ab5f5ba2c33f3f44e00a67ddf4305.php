@@ -1,4 +1,4 @@
-<?php /*a:4:{s:67:"E:\TP5.0\purchase\application\purchase\view\index\offer_review.html";i:1623143495;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:67:"E:\TP5.0\purchase\application\purchase\view\index\offer_review.html";i:1623401082;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -472,6 +472,7 @@ tr .col{
     <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
 </div>
 
+
     </script>
     <script type="text/html" id="table_bar">
         
@@ -535,6 +536,15 @@ tr .col{
                 <div class="p-b-item">
                     <img src="/public/static/images/purchase/status.png" alt="">
                     审核状态：{{item.price_status.text}}
+                    <!-- 审核状态：{{# if (item.price_status==0){ }}
+                    <span style="color:#F37108">未确认</span>
+                    {{# } else if(item.price_status==1 ) { }}
+                    <span style="color:#17AE10">已确认</span>
+                    {{# } else if(item.price_status==2 ) { }}
+                    <span style="color:#28b0e6">报价审核通过</span>
+                    {{# } else { }}
+                    <span style="color:#ff0000">报价审核通过</span>
+                {{# } }}  -->
                 </div>
                 <!--  <div class="p-b-item">
                     <img src="/public/static/images/purchase/time.png" alt="">

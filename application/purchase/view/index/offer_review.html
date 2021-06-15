@@ -12,10 +12,12 @@
     <a><cite>报价审核</cite></a>
 </div>
 {/block}
+
 {block name="toolbar"}
 <div class="layui-btn-container">
     <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">批量删除</button>
 </div>
+
 {/block}
 {block name="header"}
 <form class="layui-form aic" action="#">
@@ -375,6 +377,15 @@ tr .col{
                 <div class="p-b-item">
                     <img src="/public/static/images/purchase/status.png" alt="">
                     审核状态：{{item.price_status.text}}
+                    <!-- 审核状态：{{# if (item.price_status==0){ }}
+                    <span style="color:#F37108">未确认</span>
+                    {{# } else if(item.price_status==1 ) { }}
+                    <span style="color:#17AE10">已确认</span>
+                    {{# } else if(item.price_status==2 ) { }}
+                    <span style="color:#28b0e6">报价审核通过</span>
+                    {{# } else { }}
+                    <span style="color:#ff0000">报价审核通过</span>
+                {{# } }}  -->
                 </div>
                 <!--  <div class="p-b-item">
                     <img src="/public/static/images/purchase/time.png" alt="">

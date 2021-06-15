@@ -1,4 +1,4 @@
-<?php /*a:2:{s:57:"E:\TP5.0\purchase\application\admin\view\index\index.html";i:1622879755;s:59:"E:\TP5.0\purchase\application\admin\view\public\header.html";i:1622879853;}*/ ?>
+<?php /*a:2:{s:57:"E:\TP5.0\purchase\application\admin\view\index\index.html";i:1623393290;s:59:"E:\TP5.0\purchase\application\admin\view\public\header.html";i:1622879853;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -192,6 +192,9 @@ letter-spacing: 1px;
     .layui-nav .turn_large{
         margin-right: 20px;
         
+    }
+    .logo-info .logo-text{
+        margin-left: 10px;
     }
 </style>
 <body class="index">
