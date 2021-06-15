@@ -1,4 +1,4 @@
-<?php /*a:1:{s:56:"E:\TP5.0\purchase\application\admin\view\index\home.html";i:1623382957;}*/ ?>
+<?php /*a:1:{s:56:"E:\TP5.0\purchase\application\admin\view\index\home.html";i:1623766997;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,7 +145,7 @@
                     console.log(param)
                         var value = param.value;  
                         var name=param.name
-                        return '<div style="border-bottom: 1px solid #8B79F2; font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">供应物料：' +name+'<br>报价价格：' + value + '<br> (' + value + ')' +  
+                        return '<div style=" font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">供应商：小明<br> 供应物料：' +name+'<br>报价价格：' + value + '<br> ' +  
                             '</div>';  
                     }  
             },

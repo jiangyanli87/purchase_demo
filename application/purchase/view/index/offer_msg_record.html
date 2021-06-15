@@ -54,7 +54,6 @@
     </div> -->
    
 </form>
-
 {/block}
 {block name="table_data"}
 <script type="text/javascript">
@@ -67,7 +66,6 @@
             , limits: [10,15,20]
             , loading: true
             , title: '材料列表'
-           
             , cols: [[
                 // {type: 'checkbox', fixed: 'left'}
                  {field: 'supp_name', title: '供应商名称',align:"center",   unresize: true, sort: true}
@@ -122,31 +120,31 @@ $("table").css("width", "100%");
         });
 
         //监听行工具事件
-        table.on('tool(table_ele)', function (obj) {
-            var data = obj.data;
-            // console.log(data)
-            if (obj.event === 'del') {
-                layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
-                    $.ajax({
-                        type:'get',
-                        url:'{:url("delRule")}',
-                        data:{mid:data.id},
-                        dataType:'json',
-                        success(res){
-                            if(res.code == 0){
-                                obj.del();
-                                layer.close(index);
-                            }
-                            layer.msg(res.msg)
-                        }
-                    });
-                });
-            } else if (obj.event ==='edit') {
-                xadmin.open('编辑材料','{:url("edit_material")}?mid='+data.id,592,328)
-            }
+        // table.on('tool(table_ele)', function (obj) {
+        //     var data = obj.data;
+        //     // console.log(data)
+        //     if (obj.event === 'del') {
+        //         layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
+        //             $.ajax({
+        //                 type:'get',
+        //                 url:'{:url("delRule")}',
+        //                 data:{mid:data.id},
+        //                 dataType:'json',
+        //                 success(res){
+        //                     if(res.code == 0){
+        //                         obj.del();
+        //                         layer.close(index);
+        //                     }
+        //                     layer.msg(res.msg)
+        //                 }
+        //             });
+        //         });
+        //     } else if (obj.event ==='edit') {
+        //         xadmin.open('编辑材料','{:url("edit_material")}?mid='+data.id,592,328)
+        //     }
             
    
-        });
+        // });
         var $ = layui.$, active = {
             reload: function () {
                 var search_key = $('#search_key').val();

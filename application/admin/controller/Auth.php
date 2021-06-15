@@ -98,6 +98,7 @@ class Auth extends Controller
         return outMsg(1, '状态切换失败');
     }
     //删除权限
+    
     public function delRule()
     {
         $request =  $this->request;

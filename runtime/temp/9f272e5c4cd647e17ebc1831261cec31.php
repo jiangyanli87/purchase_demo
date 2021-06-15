@@ -1,4 +1,4 @@
-<?php /*a:4:{s:65:"E:\TP5.0\purchase\application\purchase\view\index\audit_need.html";i:1623234620;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:65:"E:\TP5.0\purchase\application\purchase\view\index\audit_need.html";i:1623746876;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -294,7 +294,7 @@ $("table").css("width", "100%");
                 layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
                     $.ajax({
                         type:'get',
-                        url:'<?php echo url("delRule"); ?>',
+                        url:'<?php echo url("mm_delRule"); ?>',
                         data:{mid:data.id},
                         dataType:'json',
                         success(res){

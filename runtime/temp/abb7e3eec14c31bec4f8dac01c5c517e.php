@@ -1,4 +1,4 @@
-<?php /*a:4:{s:66:"E:\TP5.0\purchase\application\purchase\view\index\choose_supp.html";i:1623379032;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:66:"E:\TP5.0\purchase\application\purchase\view\index\choose_supp.html";i:1623766681;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -412,7 +412,7 @@ overflow:visible !important;
 <!-- <img lay-event="del" src="/public/static/images/icon/more.png" style="margin-top: -3px;" alt="">
     <a  lay-event="del" style="margin-left: -8px;" >更多</a>        
             -->
-<div id="more" style="float: right;position: relative;top:0px;right: 6px;" lay-event="more"
+<div id="more" style="float: right;position: relative !important;top:0px;right: 6px;" lay-event="more"
     onmouseover="moreShowFunc('{{d.id}}', '{{d.supp_name}}')" onmouseout="moreHideFunc('{{d.id}}', '{{d.supp_name}}')">
     <div>
         <img src="/public/static/images/icon/more.png" style="margin-top: -3px;" alt="">
@@ -437,6 +437,16 @@ overflow:visible !important;
 
 
 <script type="text/javascript">
+$(function(){
+    $(window).on("scroll",function(){
+        var value=$('#table_ele').scrollLeft();
+             if(value>300){
+               console.log(123)
+             }
+    })
+ 
+})
+
  window.moreShowFunc = function (id, name) {
    $(".more").css("right",'20px')
             // $(".more").parents(".layui-table-cell").css('width','100px')
@@ -483,6 +493,7 @@ overflow:visible !important;
             // , height: 700
             , loading: true
             , title: '采购需求列表'
+            ,width:1300
             , cols: [[
                 {  field: 'id', title: '供应商名称', width: "8%", unresize: true, sort: true },
                 { field: 'pur_num', title: '可供数量', width: "7%", align: 'center' }
@@ -496,16 +507,17 @@ overflow:visible !important;
                 , { field: 'c_name', title: '报价类型', width: "7%", }
                 , {
                     field: 'audit_status', title: '选择类型', width: "7%", align: 'center', templet(d) {
-                        // if (d.audit_status.text=="未审核") return '<span style="color:#F37108">未审核</span>';
+                      
+                        return d.audit_status.s_handle; }
+                          // if (d.audit_status.text=="未审核") return '<span style="color:#F37108">未审核</span>';
                         // if (d.audit_status.text=="已审核") return '<span style="color:#17AE10">已通过</span>';
                         // if (d.audit_status.text=="未通过") return '<span style="color:#F30808">未通过</span>';
-                        return d.audit_status.s_handle;
-                    }
+                   
                 }
                 , { field: "uid", title: '已选数量', width: "7%", align: 'center' }
                 , { field: 'add_info', title: '未选择低价说明', width: "10%", align: 'center' }
                 , { field: 'add_info', title: '备注', align: 'center' }
-                , {  title: '操作', align: 'center', toolbar: '#table_bar', width: 250 }
+                , {  title: '操作', align: 'center', toolbar: '#table_bar', width: "20%" }
             ]]
             , page: true
             , id: 'purList'

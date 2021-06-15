@@ -1,4 +1,4 @@
-<?php /*a:4:{s:67:"E:\TP5.0\purchase\application\purchase\view\index\offer_review.html";i:1623401082;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:67:"E:\TP5.0\purchase\application\purchase\view\index\offer_review.html";i:1623722153;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -815,8 +815,6 @@ tr .col{
                     form.render();
                 });
             })
-
-            
         };
         loadPage();
         loadSize();

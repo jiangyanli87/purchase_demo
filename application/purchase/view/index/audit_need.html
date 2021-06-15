@@ -127,7 +127,7 @@ $("table").css("width", "100%");
                 layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
                     $.ajax({
                         type:'get',
-                        url:'{:url("delRule")}',
+                        url:'{:url("mm_delRule")}',
                         data:{mid:data.id},
                         dataType:'json',
                         success(res){

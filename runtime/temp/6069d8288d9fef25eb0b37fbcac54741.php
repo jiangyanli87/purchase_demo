@@ -1,4 +1,4 @@
-<?php /*a:4:{s:66:"E:\TP5.0\purchase\application\purchase\view\material\material.html";i:1623234050;s:67:"E:\TP5.0\purchase\application\purchase\view\layout\table_base2.html";i:1622860286;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:66:"E:\TP5.0\purchase\application\purchase\view\material\material.html";i:1623746580;s:67:"E:\TP5.0\purchase\application\purchase\view\layout\table_base2.html";i:1622860286;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>

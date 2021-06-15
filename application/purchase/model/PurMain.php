@@ -95,9 +95,8 @@ class PurMain extends BaseModel {
 
     //获取报价审核状态
     protected function getAuditPriceAttr(){
-
+  
     }
-
     //采购需求列表
     public function getMainList(){
         $params = request()->param();

@@ -1,4 +1,4 @@
-<?php /*a:4:{s:68:"E:\TP5.0\purchase\application\purchase\view\index\audit_comfirm.html";i:1623234500;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:68:"E:\TP5.0\purchase\application\purchase\view\index\audit_comfirm.html";i:1623398162;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -206,7 +206,6 @@
         </a>
     </div> -->
 </form>
-
 
     
 <style type="text/css">

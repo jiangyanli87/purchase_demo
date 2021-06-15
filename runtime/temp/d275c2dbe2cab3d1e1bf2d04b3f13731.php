@@ -1,4 +1,4 @@
-<?php /*a:4:{s:62:"E:\TP5.0\purchase\application\purchase\view\index\comfirm.html";i:1623164795;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:62:"E:\TP5.0\purchase\application\purchase\view\index\comfirm.html";i:1623740754;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -362,7 +362,7 @@
                 采购单号：{{ item.pur_num }}【{{item.proposer}}】
             </div>
             <div class="btn-box">
-                <button class="layui-btn t-button">重新发送</button>
+                <button class="layui-btn t-button" onclick="record_send()">重新发送</button>
                 <button onclick="offer_msg_record()" class="layui-btn t-button">消息记录</button>
                 <button class="layui-btn t-button">结束确认</button>
                 <!-- <button class="layui-btn t-button">供应商电话</button> -->
@@ -600,6 +600,24 @@
         //消息记录
         window.offer_msg_record=function(){
             xadmin.open("消息记录", '<?php echo url("offer_msg_record"); ?>',1078,680)
+        }
+        //重新发送
+        window.record_send=function(){
+            layer.open({
+          type:2,
+          title:'编辑',
+          content:'<?php echo url("offer_msg_record"); ?>',
+          area:['600px','400px'],
+          btn:['保存','关闭'],
+          yes:function (index,layero){
+            layer.msg("保存");
+          },
+          btn2:function(index,layero){
+            layer.msg("关闭");
+            return true;
+          }
+  
+        });
         }
         loadPage();
         //搜索按钮

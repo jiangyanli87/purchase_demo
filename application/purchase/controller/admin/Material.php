@@ -128,7 +128,7 @@ class Material extends AdminBase{
         return outMsg(1, '操作失败');
     }
 
-    //材料维护
+    //数据统计页面
     public function material(){
         $search_info = [
             'm_name' => '材料名称',
@@ -136,8 +136,7 @@ class Material extends AdminBase{
         ];
         return $this->new_fetch(['search_info' => $search_info]);
     }
-
-    //材料数据
+    //数据统计-供应商数据统计
     public function getMaterialData(){
         $params = request()->param();
         $page = $params['page'];

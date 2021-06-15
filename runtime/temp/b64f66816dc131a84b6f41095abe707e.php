@@ -1,4 +1,4 @@
-<?php /*a:4:{s:71:"E:\TP5.0\purchase\application\purchase\view\index\quotation_record.html";i:1622973500;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:71:"E:\TP5.0\purchase\application\purchase\view\index\quotation_record.html";i:1623747280;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -265,62 +265,62 @@ $("table").css("width", "100%");
         });
 
         //监听行工具事件
-        table.on('tool(table_ele)', function (obj) {
-            var data = obj.data;
-            // console.log(data)
-            if (obj.event === 'del') {
-                layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
-                    $.ajax({
-                        type:'get',
-                        url:'<?php echo url("delRule"); ?>',
-                        data:{mid:data.id},
-                        dataType:'json',
-                        success(res){
-                            if(res.code == 0){
-                                obj.del();
-                                layer.close(index);
-                            }
-                            layer.msg(res.msg)
-                        }
-                    });
-                });
-            } else if (obj.event ==='edit') {
-                xadmin.open('编辑材料','<?php echo url("edit_material"); ?>?mid='+data.id,592,328)
-            }
+        // table.on('tool(table_ele)', function (obj) {
+        //     var data = obj.data;
+        //     // console.log(data)
+        //     if (obj.event === 'del') {
+        //         layer.confirm('真的删除材料：'+ data.m_num + '，规格：' + data.station_name+"?" ,{title:'警告',icon:3}, function (index) {
+        //             $.ajax({
+        //                 type:'get',
+        //                 url:'<?php echo url("delRule"); ?>',
+        //                 data:{mid:data.id},
+        //                 dataType:'json',
+        //                 success(res){
+        //                     if(res.code == 0){
+        //                         obj.del();
+        //                         layer.close(index);
+        //                     }
+        //                     layer.msg(res.msg)
+        //                 }
+        //             });
+        //         });
+        //     } else if (obj.event ==='edit') {
+        //         xadmin.open('编辑材料','<?php echo url("edit_material"); ?>?mid='+data.id,592,328)
+        //     }
             
    
-        });
-        var $ = layui.$, active = {
-            reload: function () {
-                var search_key = $('#search_key').val();
-                var search_val = $('#search_val').val();
-                if(search_key == ''){
-                    layer.msg('请选择搜索类型',{icon:5});
-                    return false;
-                }
-                if(search_val == ''){
-                    layer.msg('请输入搜索内容',{icon:5});
-                    return false;
-                }
-                //执行重载
-                table.reload('materList', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        search_key,
-                        search_val
-                    }
-                });
-            }
-        };
-        $('#search').on('click', function () {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-        $('#add').click(function(){
-            xadmin.open('添加','<?php echo url("add_material"); ?>',592,328);
-        })
+        // });
+        // var $ = layui.$, active = {
+        //     reload: function () {
+        //         var search_key = $('#search_key').val();
+        //         var search_val = $('#search_val').val();
+        //         if(search_key == ''){
+        //             layer.msg('请选择搜索类型',{icon:5});
+        //             return false;
+        //         }
+        //         if(search_val == ''){
+        //             layer.msg('请输入搜索内容',{icon:5});
+        //             return false;
+        //         }
+        //         //执行重载
+        //         table.reload('materList', {
+        //             page: {
+        //                 curr: 1 //重新从第 1 页开始
+        //             }
+        //             , where: {
+        //                 search_key,
+        //                 search_val
+        //             }
+        //         });
+        //     }
+        // };
+        // $('#search').on('click', function () {
+        //     var type = $(this).data('type');
+        //     active[type] ? active[type].call(this) : '';
+        // });
+        // $('#add').click(function(){
+        //     xadmin.open('添加','<?php echo url("add_material"); ?>',592,328);
+        // })
     
     })
 

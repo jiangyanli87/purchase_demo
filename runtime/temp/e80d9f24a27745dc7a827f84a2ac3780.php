@@ -1,4 +1,4 @@
-<?php /*a:4:{s:65:"E:\TP5.0\purchase\application\purchase\view\index\item_class.html";i:1623144926;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
+<?php /*a:4:{s:65:"E:\TP5.0\purchase\application\purchase\view\index\item_class.html";i:1623745742;s:66:"E:\TP5.0\purchase\application\purchase\view\layout\table_base.html";i:1622876892;s:62:"E:\TP5.0\purchase\application\purchase\view\public\header.html";i:1622880787;s:62:"E:\TP5.0\purchase\application\purchase\view\public\footer.html";i:1620956778;}*/ ?>
 <!doctype html>
 <html class="x-admin-sm">
 <head>
@@ -323,7 +323,7 @@ $("table").css("width", "100%");
             }
             else if (obj.event ==='pur_item') {
 
-                xadmin.open('查看','<?php echo url("edit_item"); ?>?id='+data.id,356,228)
+                xadmin.open('编辑','<?php echo url("edit_material_classify"); ?>?id='+data.id,356,228)
             }
         });
         var $ = layui.$, active = {

@@ -61,7 +61,7 @@ public function editItem(){
         }
         return $this->new_fetch();
     }
-    //添加材料
+    //物料维护-添加材料
     public function add_material(){
         if(request()->isPost()){
             $data=request()->post();
@@ -71,7 +71,7 @@ public function editItem(){
         }
         return $this->new_fetch();
     }
-        //材料数据
+        //需求维护-查看详情-物料信息
         public function getMaterialData(){
             $params = request()->param();
             $page = $params['page'];
@@ -86,12 +86,11 @@ public function editItem(){
                 ->field('a.*,b.c_name')
                 ->where($where)
                 ->limit(($page-1)*$limit, $limit)
-                ->select();
+                ->select(); 
             return outTableMsg(0, '', $count, $material);
         }
-      //删除材料
-      
-      public function delRule()
+      //物料维护- 删除材料
+      public function mm_delRule()
       {
           $request =  $this->request;
           $id = $request->param('mid');
@@ -130,7 +129,6 @@ public function editItem(){
         ];
         return $this->new_fetch(['search_info' => $search_info]);
     }
-
     //添加物料分类
     public function add_item(){
        if(request()->isPost()){
@@ -141,8 +139,6 @@ public function editItem(){
        };
       return $this->new_fetch();
     }
-
-
     //物料维护
     public function audit_need(){
         return $this->new_fetch(['search_info' => [
@@ -153,9 +149,8 @@ public function editItem(){
 public function listData(){
     (new MaterialValidate())->goCheck("showList");
     (new MaterialModel())->getListData();
-
 }
-        //物料维护编辑材料
+ //物料维护编辑材料
         public function edit_material(){
             $params = request()->param();
             if(request()->isPost()){
@@ -178,12 +173,12 @@ public function listData(){
             // return $this->new_fetch();
         }
     //编辑物料分类
-    public function edit_item(){
+    public function edit_material_classify(){
         $params = request()->param();
         // if(request()->isPost()){
-        $edit_item = Db::name('material_category')->where('id',$params['id'])->find();
+        $edit_material_classify = Db::name('material_category')->where('id',$params['id'])->find();
             $this->assign(['params'=>$params]);
-        return $this->new_fetch(['edit_item' => $edit_item]);
+        return $this->new_fetch(['edit_material_classify' => $edit_material_classify]);
         
     // }
     // return $this->new_fetch();
@@ -198,8 +193,6 @@ public function listData(){
         }
         return outMsg(1, '操作失败');
     }
-
-
         //采购需求列表数据
         public function getNeedList(){
             $params = request()->param();
@@ -242,7 +235,6 @@ public function listData(){
         $limit = $param['limit'];
         $cid = $param['cid'];
         $where = [];
-
         if($cid == 0){//生产原材料
             if(isset($param['m_name']) && !empty($param['m_name'])) $where[] = ['type', '=', $param['m_name']];
             if(isset($param['spec']) && !empty($param['spec'])) $where[] = ['name', '=', $param['spec']];
@@ -257,7 +249,6 @@ public function listData(){
         }
         return outTableMsg(0, '获取成功', $count, $list);
     }
-
     //发布采购需求
     public function add_purch(){
         $params = request()->param();
@@ -350,10 +341,8 @@ public function listData(){
     public function suppBindMater(){
 
     }
-
     //需求维护添加
     public function add_need(){
-
            if(request()->isPost()){
             $data=request()->post();
             $res=Db::name('supplier')->insert($data);
@@ -362,7 +351,7 @@ public function listData(){
         }
         return $this->new_fetch();
     }
-    //确认报价-消息记录
+    //报价确认-消息记录
     public function offer_msg_record(){
         return $this->new_fetch(['search_info' => [
             'supp_name' => '供应商名称'
@@ -378,27 +367,33 @@ public function listData(){
             (new SupplierValidate())->goCheck('showList');
             (new SupplierModel())->getListData();
         }
-        //开始审核
+        //报价审核-开始审核
         public function go_check(){
             $this->assign('name','xiaoming');
             return $this->new_fetch();
         }
-            //选择报价
-            public function choose_quote(){
+        // 需求审核-开始审核
+        public function demand_go_check(){
+            $this->assign('name','xiaoming');
+            return $this->new_fetch();
+        }
+
+        //报价确认-选择供应商-选择报价
+        public function choose_quote(){
                 $this->assign('name','xiaoming');
                 return $this->new_fetch();
             }
-  //取消资格
+  //报价确认-选择供应商-取消资格
   public function cel_qualification(){
     $this->assign('name','xiaoming');
     return $this->new_fetch();
 }
-  //驳回报价
+  //报价确认-选择供应商-驳回报价
   public function reject(){
     $this->assign('name','xiaoming');
     return $this->new_fetch();
 }
-  //历史报价
+  //报价确认-选择供应商-历史报价
   public function history_quote(){
     $this->assign('name','xiaoming');
     return $this->new_fetch();
